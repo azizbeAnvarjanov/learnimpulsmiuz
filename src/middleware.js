@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export function middleware(req) {
   // Foydalanuvchi login qilganmi yoki yo'qmi tekshiramiz
-  const student = req.cookies.get("student"); // Cookie'dan foydalanuvchi ma'lumotini olish
+  const student = req.cookies.get("user"); // Cookie'dan foydalanuvchi ma'lumotini olish
 
   const loginUrl = new URL("/login", req.url);
   const dashboardUrl = new URL("/", req.url);
