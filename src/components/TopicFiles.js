@@ -1,0 +1,177 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { toast } from "react-hot-toast";
+import { supabase } from "@/app/supabaseClient";
+import { FileText, Trash } from "lucide-react";
+import Link from "next/link";
+
+export default function TopicFiles({ topicId }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+  const [notes, setNotes] = useState([]);
+
+  console.log(notes);
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      const { data, error } = await supabase
+        .from("topics")
+        .select("notes")
+        .eq("topic_id", topicId)
+        .single();
+
+      if (error) {
+        toast.error("Fayllarni olishda xatolik!");
+      } else {
+        try {
+          setNotes(data.notes);
+        } catch {
+          setNotes([]);
+        }
+      }
+    };
+
+    fetchNotes();
+  }, [topicId]);
+
+  const handleFileUpload = async () => {
+    if (!file || !fileName) {
+      toast.error("Fayl va nomni kiriting!");
+      return;
+    }
+
+    const filePath = `notes/${topicId}/${file.name}`;
+    const { data, error } = await supabase.storage
+      .from("notes")
+      .upload(filePath, file);
+    if (error) {
+      toast.error("Fayl yuklashda xatolik!");
+      return;
+    }
+
+    const { publicURL } = supabase.storage.from("notes").getPublicUrl(filePath);
+    const fileUrl = `${
+      supabase.storage
+        .from("notes")
+        .getPublicUrl(`notes/${topicId}/${file.name}`).data.publicUrl
+    }`;
+    const newNote = { name: fileName, url: fileUrl };
+
+    const updatedNotes = [...notes, newNote];
+    setNotes(updatedNotes);
+
+    const { error: updateError } = await supabase
+      .from("topics")
+      .update({ notes: updatedNotes }) // JSON.stringify kerak emas
+      .eq("topic_id", topicId);
+
+    if (updateError) {
+      toast.error("Maʼlumotlar bazasini yangilashda xatolik!");
+    } else {
+      toast.success("Fayl muvaffaqiyatli yuklandi!");
+    }
+
+    setIsOpen(false);
+    setFile(null);
+    setFileName("");
+  };
+
+  const handleDelete = async (name) => {
+    const note = notes.find((n) => n.name === name);
+    if (!note) return;
+
+    try {
+      // Fayl yo‘lini URL dan chiqarib olish
+      const fileUrl = new URL(note.url);
+      const filePath = decodeURIComponent(`notes/${topicId}/${name}`);
+      console.log(filePath);
+
+      const decodedUrl = decodeURIComponent(fileUrl); // URL ni dekodlash
+      const parts = decodedUrl.split("/"); // URL bo‘laklarga ajratish
+      const fileName = parts[parts.length - 1]
+
+
+      // Faylni Supabase storage dan o‘chirish
+      const { error: deleteError } = await supabase.storage
+        .from("notes")
+        .remove([`notes/${topicId}/${fileName}`]);
+
+      if (deleteError) {
+        console.error("Fayl o‘chirishda xatolik:", deleteError);
+        toast.error("Faylni o‘chirishda xatolik!");
+        return;
+      }
+
+      // `notes` array dan o‘chirib, ma’lumotlar bazasini yangilash
+      const updatedNotes = notes.filter((n) => n.name !== name);
+      setNotes(updatedNotes);
+
+      const { error: updateError } = await supabase
+        .from("topics")
+        .update({ notes: updatedNotes }) // JSON.stringify kerak emas
+        .eq("topic_id", topicId);
+
+      if (updateError) {
+        console.error("DB yangilash xatosi:", updateError);
+        toast.error("Maʼlumotlar bazasini yangilashda xatolik!");
+      } else {
+        toast.success("Fayl o‘chirildi!");
+      }
+    } catch (err) {
+      console.error("Xatolik yuz berdi:", err);
+      toast.error("Faylni o‘chirishda xatolik!");
+    }
+  };
+
+  return (
+    <div className="w-full">
+      <Button onClick={() => setIsOpen(true)}>Fayl qo‘shish</Button>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Fayl yuklash</DialogTitle>
+          </DialogHeader>
+          <Input
+            placeholder="Fayl nomi"
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+          />
+          <Input type="file" onChange={(e) => setFile(e.target.files[0])} />
+          <Button onClick={handleFileUpload}>Yuklash</Button>
+        </DialogContent>
+      </Dialog>
+      <ul>
+        {notes?.map((note, idx) => (
+          <div
+            key={idx}
+            className="flex items-center justify-between gap-2 bg-white mt-2 p-3 rounded-md"
+          >
+            <div className="flex items-center gap-2">
+              <FileText />
+              <Link href={note.url}>{note.name}</Link>
+            </div>
+            <div>
+              <Button
+                onClick={() => handleDelete(note.name)}
+                variant="destructive"
+                className="w-[40px] h-[40px] rounded-xl"
+              >
+                <Trash />
+              </Button>
+            </div>
+          </div>
+        ))}
+      </ul>
+    </div>
+  );
+}

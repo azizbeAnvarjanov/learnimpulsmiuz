@@ -177,7 +177,7 @@ const TopicPage = () => {
       <div className="w-[65%]">
         <div className=" text-2xl font-bold flex items-center gap-2">
           <Link
-            href={`/course/${course_id}`}
+            href={`/dashboard/course/${course_id}`}
             variant="outline"
             className="bg-white border  flex items-center justify-center hover:bg-muted w-[45px] h-[45px] rounded-xl"
           >
@@ -237,12 +237,141 @@ const TopicPage = () => {
                 Savol <CircleFadingPlus />
               </Button>
             </div>
+            <div>
+              {test.questions.map((item, idx) => (
+                <div key={idx} className="p-3 border rounded-lg shadow-md mb-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold">{item.question}</h3>
+                    <div className="text-green-600 font-semibold">
+                      To'g'ri javob: {item.answer}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 py-2 ">
+                    {[
+                      item.optionA,
+                      item.optionB,
+                      item.optionC,
+                      item.optionD,
+                    ].map((option, idx) => (
+                      <div
+                        key={idx}
+                        className={`text-center border p-2 rounded-md ${
+                          option === item.answer
+                            ? "bg-green-100 font-semibold"
+                            : ""
+                        }`}
+                      >
+                        {option}
+                      </div>
+                    ))}
+                  </div>
 
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="destructive"
+                      onClick={() =>
+                        handleDeleteQuestion(test, item.question_id)
+                      }
+                    >
+                      <Trash />
+                    </Button>
+                    <EditQuestionDialog
+                      testId={test.id}
+                      questionId={item.question_id}
+                      tests={tests}
+                      setTests={setTests}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
 
-      
+      {/* Test qo'shish modali */}
+
+      <Dialog open={isTestModalOpen} onClose={() => setIsTestModalOpen(false)}>
+        <DialogTrigger></DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle></DialogTitle>
+            <div className="space-y-2">
+              <h2 className="text-lg font-bold">Yangi test yaratish</h2>
+              <Input
+                placeholder="Test Name"
+                value={testName}
+                onChange={(e) => setTestName(e.target.value)}
+              />
+              <Input
+                type="number"
+                placeholder="Time Limit (minutes)"
+                value={timeLimit}
+                onChange={(e) => setTimeLimit(e.target.value)}
+              />
+
+              <div className="flex items-center gap-2">
+                <Button onClick={handleAddTest}>Yaratish</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsTestModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
+      {/* Savol qo'shish modali */}
+
+      <Dialog
+        open={isQuestionModalOpen}
+        onClose={() => setIsQuestionModalOpen(false)}
+      >
+        <DialogTrigger></DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle></DialogTitle>
+            <div className="space-y-2">
+              <h2 className="text-lg font-bold">Savol qo'shish</h2>
+              <Input
+                placeholder="Question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+              />
+              {options.map((opt, idx) => (
+                <Input
+                  key={idx}
+                  placeholder={`Option ${idx + 1}`}
+                  value={opt}
+                  onChange={(e) => {
+                    const newOptions = [...options];
+                    newOptions[idx] = e.target.value;
+                    setOptions(newOptions);
+                  }}
+                />
+              ))}
+              <Input
+                type="number"
+                placeholder="Correct Answer (0-3)"
+                value={correct}
+                onChange={(e) => setCorrect(parseInt(e.target.value, 10))}
+              />
+              <div className="flex items-center gap-2">
+                <Button onClick={handleAddQuestion}>Qo'shish</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsQuestionModalOpen(false)}
+                >
+                  Bekor qilish
+                </Button>
+              </div>
+            </div>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

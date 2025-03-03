@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "react-hot-toast";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -44,10 +45,9 @@ const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const [kurs, setKurs] = useState("1-kurs");
 
-  console.log(user);
   const fetchCourses = async () => {
     if (!user) return; // Agar foydalanuvchi fio bo‘lmasa, hech narsa qilinmaydi
-
+    setLoading(true);
     const { data, error } = await supabase
       .from("courses")
       .select("*")
@@ -56,6 +56,7 @@ const Dashboard = () => {
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);
     } else {
+      setLoading(false);
       setCourses(data);
     }
   };
@@ -82,7 +83,7 @@ const Dashboard = () => {
   };
 
   const generateCourseId = (name) => {
-    return name.toLowerCase().replace(/\s+/g, "-");
+    return Math.floor(100000000 + Math.random() * 900000000);
   };
 
   const handleAddCourse = async () => {
@@ -94,7 +95,7 @@ const Dashboard = () => {
     // Upload banner to Supabase Storage
     const { data, error } = await supabase.storage
       .from("banners")
-      .upload(`courses/${courseId}`, banner);
+      .upload(`banners/${courseId}/${banner.name}`, banner);
 
     if (error) {
       setLoading(false);
@@ -102,8 +103,9 @@ const Dashboard = () => {
     }
 
     const bannerUrl = `${
-      supabase.storage.from("banners").getPublicUrl(`courses/${courseId}`).data
-        .publicUrl
+      supabase.storage
+        .from("banners")
+        .getPublicUrl(`banners/${courseId}/${banner.name}`).data.publicUrl
     }`;
 
     // Insert course into database
@@ -119,15 +121,19 @@ const Dashboard = () => {
 
     if (insertError) {
       setLoading(false);
-      return alert("Error adding course");
+      return toast.error("Error adding course");
     }
 
     setLoading(false);
-    alert("Course added successfully");
+    toast.success("Course added successfully");
     setCourseName("");
     setBanner(null);
     setOpen(false);
   };
+
+  if (loading) {
+    return <>loading...</>;
+  }
 
   return (
     <div className="p-10">
@@ -164,21 +170,21 @@ const Dashboard = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="mt-4 w-fulf">
+      <div className="w-full">
         <h2 className="text-lg font-bold">Courses</h2>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-5 gap-5">
           {courses.map((course) => (
             <Link
-              href={`/course/${course.course_id}`}
+              href={`/dashboard/course/${course.course_id}`}
               key={course.id}
-              className="border py-2 px-3 mt-10 flex items-center gap-3 shadow-xl rounded-lg hover:bg-muted"
+              className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
             >
               <img
                 src={course.banner_url}
                 alt={course.name}
-                className="w-16 h-16 object-cover rounded-md"
+                className="w-full h-[200px] object-cover rounded-t-md"
               />
-              <div>
+              <div className="p-4">
                 <p className="font-bold text-xl">{course.name}</p>
                 <p>
                   <strong>Author:</strong> {course.teacher}

@@ -2,8 +2,6 @@
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { supabase } from "./supabaseClient";
 
@@ -66,20 +64,20 @@ const Home = () => {
         ))}
       </div>
 
-      <h2 className="text-lg font-bold">Courses</h2>
-      <div className="grid grid-cols-2 gap-5">
+      <h2 className="text-lg font-bold">Fanlar</h2>
+      <div className="grid grid-cols-5 gap-5">
         {courses.map((course) => (
           <Link
             href={`/course/${course.course_id}`}
             key={course.id}
-            className="border py-2 px-3 mt-10 flex items-center gap-3 shadow-xl rounded-lg hover:bg-muted"
+            className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
           >
             <img
               src={course.banner_url}
               alt={course.name}
-              className="w-16 h-16 object-cover rounded-md"
+              className="w-full h-[200px] object-cover rounded-t-md"
             />
-            <div>
+            <div className="p-4">
               <p className="font-bold text-xl">{course.name}</p>
               <p>
                 <strong>Author:</strong> {course.teacher}
