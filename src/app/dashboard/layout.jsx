@@ -4,7 +4,7 @@ import DashboardNavbar from "./DashboardNavbar";
 const layout = ({ children }) => {
   return (
     <div>
-      {/* <DashboardNavbar /> */}
+      <DashboardNavbar />
       <div>{children}</div>
     </div>
   );

@@ -138,7 +138,7 @@ const Dashboard = () => {
     <div className="p-10">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>Yaratish</Button>
+          <Button>Yangi fan yaratish</Button>
         </DialogTrigger>
         <DialogTitle></DialogTitle>
         <DialogContent>
@@ -170,7 +170,7 @@ const Dashboard = () => {
       </Dialog>
 
       <div className="w-full">
-        <h2 className="text-lg font-bold">Courses</h2>
+        <h2 className="text-lg font-bold">Siz yaratgan fanlar</h2>
         <div className="grid grid-cols-5 gap-5">
           {courses.map((course) => (
             <Link

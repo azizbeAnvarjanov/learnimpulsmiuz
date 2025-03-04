@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "react-hot-toast";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 const Dashboard = () => {
   const router = useRouter();
