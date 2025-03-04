@@ -84,7 +84,7 @@ export default function CoursePage() {
   return (
     <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
       <div className="player-thumb w-full md:w-[75%] overflow-y-scroll scrollbar-hide max-h-screen">
-        <div className="flex items-center justify-between p-3">
+        <div className="flex items-center justify-between md:justify-start md:gap-3 p-3">
           <Link
             href={`/`}
             className="bg-white border flex items-center justify-center hover:bg-muted w-[40px] h-[40px] rounded-xl"
@@ -98,7 +98,7 @@ export default function CoursePage() {
             handleTopicClick={handleTopicClick}
           />
         </div>
-  
+
         <div className="w-full h-[300px] md:h-[700px] overflow-hidden">
           {selectedTopic?.video_link && (
             <ReactPlayer
@@ -155,11 +155,8 @@ export default function CoursePage() {
           </div>
         </div>
       </div>
-      <div
-        className="w-full hidden md:block md:w-[25%] min-h-screen border-l
-"
-      >
-        <div className="flex items-center gap-1 p-2">
+      <div className="w-full hidden md:block md:w-[25%] max-h-[100vh] border-l player-thumb overflow-y-scroll">
+        <div className="flex items-center gap-1 p-3 justify-between">
           <strong className="mr-2">Mavzular</strong>
           <Button
             className="w-[40px] h-[40px] rounded-xl"
@@ -169,7 +166,7 @@ export default function CoursePage() {
             <RefreshCcw />
           </Button>
         </div>
-        <ul>
+        <ul className="">
           {topics.map((topic, idx) => (
             <li
               key={idx}
@@ -179,7 +176,9 @@ export default function CoursePage() {
               onClick={() => handleTopicClick(topic)}
             >
               <div className="w-full">
-                <div>{topic.name}</div>
+                <div>
+                  {topic.order}. {topic.name} a
+                </div>
               </div>
             </li>
           ))}

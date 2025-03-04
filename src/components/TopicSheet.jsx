@@ -7,7 +7,11 @@ import { AlignJustify, RefreshCcw } from "lucide-react";
 import { supabase } from "@/app/supabaseClient";
 import { DialogTitle } from "./ui/dialog";
 
-export default function TopicsSheet({ course_id, selectedTopic, handleTopicClick }) {
+export default function TopicsSheet({
+  course_id,
+  selectedTopic,
+  handleTopicClick,
+}) {
   const [topics, setTopics] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -25,35 +29,41 @@ export default function TopicsSheet({ course_id, selectedTopic, handleTopicClick
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline"><AlignJustify /></Button>
-      </SheetTrigger>
-      <DialogTitle className="hidden"></DialogTitle>
-      <SheetContent side="right">
-        <div className="flex items-center justify-between p-2">
-          <strong className="text-lg">Mavzular</strong>
-          <Button variant="outline" onClick={fetchTopics}>
-            <RefreshCcw />
+    <div className="md:hidden">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button variant="outline">
+            <AlignJustify />
           </Button>
-        </div>
-        <ul className="mt-4">
-          {topics.map((topic) => (
-            <li
-              key={topic.topic_id}
-              className={`cursor-pointer border-t py-3 px-4 ${
-                selectedTopic?.topic_id === topic.topic_id ? "bg-green-300" : "hover:bg-gray-100"
-              }`}
-              onClick={() => {
-                handleTopicClick(topic);
-                setOpen(false); // Sheetni yopish
-              }}
-            >
-              {topic.name}
-            </li>
-          ))}
-        </ul>
-      </SheetContent>
-    </Sheet>
+        </SheetTrigger>
+        <DialogTitle className="hidden"></DialogTitle>
+        <SheetContent side="right" className="overflow-y-scroll">
+          <div className="flex items-center justify-between p-2">
+            <strong className="text-lg">Mavzular</strong>
+            <Button variant="outline" onClick={fetchTopics}>
+              <RefreshCcw />
+            </Button>
+          </div>
+          <ul className="mt-4">
+            {topics.map((topic) => (
+              <li
+                key={topic.topic_id}
+                className={`cursor-pointer border-t py-3 px-4 ${
+                  selectedTopic?.topic_id === topic.topic_id
+                    ? "bg-green-300"
+                    : "hover:bg-gray-100"
+                }`}
+                onClick={() => {
+                  handleTopicClick(topic);
+                  setOpen(false); // Sheetni yopish
+                }}
+              >
+                {topic.order}. {topic.name}
+              </li>
+            ))}
+          </ul>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }

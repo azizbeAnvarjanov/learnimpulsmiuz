@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
   const handleLogin = async () => {
     setError("");
@@ -35,6 +36,16 @@ export default function LoginPage() {
     // Dashboard sahifasiga yo‘naltiramiz
     router.push("/");
   };
+  useEffect(() => {
+    const userData = Cookies.get("user");
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      if (user) {
+        router.push("/");
+      }
+    }
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -61,7 +72,12 @@ export default function LoginPage() {
         >
           Kirish
         </Button>
-        <Link href="/employeesLogin" className="mt-3 text-center flex w-full justify-center">Xodim sifatida kirish</Link>
+        <Link
+          href="/employeesLogin"
+          className="mt-3 text-center flex w-full justify-center"
+        >
+          Xodim sifatida kirish
+        </Link>
       </div>
     </div>
   );

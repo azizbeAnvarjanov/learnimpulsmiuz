@@ -29,6 +29,7 @@ export default function CoursePage() {
   const [course, setCourse] = useState(null);
   const [topics, setTopics] = useState([]);
   const [topicName, setTopicName] = useState("");
+  const [topicOrder, setTopicOrder] = useState(0);
   const [description, setDescription] = useState("");
   const [videoLink, setVideoLink] = useState("");
   const [loading, setLoading] = useState(false);
@@ -100,6 +101,7 @@ export default function CoursePage() {
         topic_id,
         name: topicName,
         description,
+        order: topicOrder,
         notes: [],
         video_link: videoLink,
       },
@@ -132,6 +134,7 @@ export default function CoursePage() {
     setTopicName(data.name);
     setDescription(data.description);
     setVideoLink(data.video_link);
+    setTopicOrder(data.order);
     setEdit_Open(true);
   };
 
@@ -260,6 +263,12 @@ export default function CoursePage() {
             <DialogTitle></DialogTitle>
             <DialogContent>
               <Input
+                type="number"
+                placeholder="Mavzu tartib raqami"
+                value={topicOrder}
+                onChange={(e) => setTopicOrder(e.target.value)}
+              />
+              <Input
                 type="text"
                 placeholder="Mavzu nomi"
                 value={topicName}
@@ -303,6 +312,12 @@ export default function CoursePage() {
           <DialogContent>
             <h1>Ma'lumotlarni tahrirlash</h1>
             <Input
+              type="number"
+              placeholder="Mavzu tarib raqami"
+              value={topicOrder}
+              onChange={(e) => setTopicOrder(e.target.value)}
+            />
+            <Input
               type="text"
               placeholder="Mavzu nomi"
               value={topicName}
@@ -339,7 +354,7 @@ export default function CoursePage() {
                     href={`/dashboard/course/${course_id}/topic/${topic.topic_id}`}
                     className="font-bold"
                   >
-                    {topic.name} - {topic.order}
+                    {topic.order}. {topic.name}
                   </Link>
 
                   <p className="line-clamp-1 w-[90%]">{topic.description}</p>
