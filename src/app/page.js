@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "./supabaseClient";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Home = () => {
   const router = useRouter();
@@ -33,6 +35,13 @@ const Home = () => {
       fetchCourses(parsedUser.kurs);
     }
   }, []);
+  useEffect(() => {
+    if (user) {
+      if (user.role !== "student") {
+        router.push("/dashboard"); // Agar cookie bo‘lmasa, login sahifasiga qaytarish
+      }
+    }
+  }, [user]);
 
   const handleKursChange = (event) => {
     const selectedKurs = event.target.value;
@@ -41,17 +50,17 @@ const Home = () => {
   };
 
   return (
-    <div className="p-10">
+    <div className="p-5">
       <h2 className="text-lg font-bold mb-4">Kurslarni Tanlang</h2>
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {["1", "2", "3", "4", "5", "6"].map((num) => (
-          <label
+          <Label
             key={num}
             className={`flex items-center gap-2 border py-2 px-4 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white ${
               kurs === `${num}-kurs` ? "bg-blue-500 text-white shadow-xl" : ""
             }`}
           >
-            <input
+            <Input
               type="radio"
               name="kurs"
               value={`${num}-kurs`}
@@ -60,12 +69,12 @@ const Home = () => {
               className="hidden"
             />
             {num}-kurs
-          </label>
+          </Label>
         ))}
       </div>
 
       <h2 className="text-lg font-bold">Fanlar</h2>
-      <div className="grid grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
         {courses.map((course) => (
           <Link
             href={`/course/${course.course_id}`}

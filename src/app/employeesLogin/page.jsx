@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { supabase } from "../supabaseClient";
 import Cookies from "js-cookie";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const EmployeesLoigin = () => {
   const [login, setlogin] = useState("");
@@ -39,27 +41,27 @@ const EmployeesLoigin = () => {
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-4">Xodim sifatida kirish</h2>
         {error && <p className="text-red-500">{error}</p>}
-        <input
+        <Input
           type="text"
           placeholder="Login"
           value={login}
           onChange={(e) => setlogin(e.target.value)}
           className="w-full p-2 border rounded mb-2"
         />
-        <input
+        <Input
           type="password"
           placeholder="Parol"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 border rounded mb-4"
         />
-        <button
+        <Button
           onClick={handleLogin}
-          className="w-full bg-blue-500 text-white py-2 rounded"
+          className="w-full text-white py-2 rounded"
         >
           Kirish
-        </button>
-        <Link href="/login">Talaba sifatida kirish</Link>
+        </Button>
+        <Link href="/login" className="mt-3 text-center flex w-full justify-center">Talaba sifatida kirish</Link>
       </div>
     </div>
   );

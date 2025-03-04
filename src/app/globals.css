@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 
+.player-thumb::-webkit-scrollbar {
+	width: 0px;
+}
 
 @layer base {
   :root {

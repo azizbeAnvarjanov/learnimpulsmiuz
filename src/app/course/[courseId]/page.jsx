@@ -6,9 +6,10 @@ import { useParams } from "next/navigation";
 import { supabase } from "@/app/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, RefreshCcw } from "lucide-react";
+import { ChevronLeft, RefreshCcw, SquareArrowOutUpRight } from "lucide-react";
 import ReactPlayer from "react-player";
 import { toast } from "react-hot-toast";
+import TopicsSheet from "@/components/TopicSheet";
 
 export default function CoursePage() {
   const params = useParams();
@@ -81,18 +82,24 @@ export default function CoursePage() {
   if (!course) return <p>Loading...</p>;
 
   return (
-    <div className="flex items-start max-h-screen overflow-hidden">
-      <div className="player-thumb w-[75%] p-5 overflow-y-scroll scrollbar-hide max-h-screen">
-        <div className="flex items-center gap-3">
+    <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
+      <div className="player-thumb w-full md:w-[75%] overflow-y-scroll scrollbar-hide max-h-screen">
+        <div className="flex items-center justify-between p-3">
           <Link
             href={`/`}
-            className="bg-white border flex items-center justify-center hover:bg-muted w-[45px] h-[45px] rounded-xl"
+            className="bg-white border flex items-center justify-center hover:bg-muted w-[40px] h-[40px] rounded-xl"
           >
             <ChevronLeft />
           </Link>
           <h1 className="font-bold text-2xl">{course.name}</h1>
+          <TopicsSheet
+            course_id={course_id}
+            selectedTopic={selectedTopic}
+            handleTopicClick={handleTopicClick}
+          />
         </div>
-        <div className="w-full h-[700px] overflow-hidden rounded-xl mt-3">
+  
+        <div className="w-full h-[300px] md:h-[700px] overflow-hidden">
           {selectedTopic?.video_link && (
             <ReactPlayer
               url={selectedTopic.video_link}
@@ -102,52 +109,57 @@ export default function CoursePage() {
             />
           )}
         </div>
-        <div className="border bg-muted p-5 mt-3 rounded-lg">
-          <h1 className="font-bold">Mavzu tafsivi</h1>
-          {selectedTopic?.description}{" "}
-        </div>
-        <div className="mt-5">
-          <h2 className="font-bold text-xl">Fayllar</h2>
-          {selectedTopic?.notes.length === 0 && <>fayl mavjudmas</>}
-          {selectedTopic?.notes.map((file, idx) => (
-            <Link
-              target="_blank"
-              className="border w-full bg-muted flex p-4 rounded-md mt-2"
-              href={`${file.url}`}
-              key={idx}
-            >
-              {file.name}
-            </Link>
-          ))}
-        </div>
-        <div className="mt-5">
-          <h2 className="font-bold text-xl">Test</h2>
-          {test !== null ? (
-            <div className="border w-full bg-muted flex p-4 rounded-md mt-2 justify-between items-center">
-              <div>
-                <p>
-                  <strong>Test nomi:</strong> {test.name}
-                </p>
-                <p>
-                  <strong>Test uchun ajratilgan daqiqa:</strong>{" "}
-                  {test.time_limit} daiqiqa
-                </p>
-                <p>
-                  <strong>Test savollar soni:</strong> {test.questions.length}{" "}
-                  ta
-                </p>
-                <Link href={`/test/${test.id}`} className="">
-                  <Button variant="outline">Testni boshlash</Button>
+
+        <div className="p-3">
+          <div className="border bg-muted p-5 rounded-lg">
+            <h1 className="font-bold">Mavzu tafsivi</h1>
+            {selectedTopic?.description}{" "}
+          </div>
+          <div className="grid md:grid-cols-2 gap-5 py-5">
+            <div className="">
+              <h2 className="font-bold text-xl">Fayllar</h2>
+              {selectedTopic?.notes.length === 0 && <>fayl mavjudmas</>}
+              {selectedTopic?.notes.map((file, idx) => (
+                <Link
+                  target="_blank"
+                  className="border w-full bg-muted flex p-4 rounded-md mt-2 items-center justify-between"
+                  href={`${file.url}`}
+                  key={idx}
+                >
+                  {file.name}
+                  <SquareArrowOutUpRight />
                 </Link>
-              </div>
+              ))}
             </div>
-          ) : (
-            <p>Test mavjud emas</p>
-          )}
+            <div className="">
+              <h2 className="font-bold text-xl">Test</h2>
+              {test !== null ? (
+                <div className="border w-full bg-muted flex p-4 rounded-md mt-2 justify-between items-center">
+                  <div>
+                    <p>
+                      <strong>Test nomi:</strong> {test.name}
+                    </p>
+                    <p>
+                      <strong>Test savollar soni:</strong>{" "}
+                      {test.questions.length} ta
+                    </p>
+                    <Link href={`/test/${test.id}`} className="">
+                      <Button variant="outline">Testni boshlash</Button>
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <p>Test mavjud emas</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-      <div className="w-[25%] p-5">
-        <div className="flex items-center gap-1">
+      <div
+        className="w-full hidden md:block md:w-[25%] min-h-screen border-l
+"
+      >
+        <div className="flex items-center gap-1 p-2">
           <strong className="mr-2">Mavzular</strong>
           <Button
             className="w-[40px] h-[40px] rounded-xl"

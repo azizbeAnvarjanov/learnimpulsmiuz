@@ -2,7 +2,6 @@
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "react-hot-toast";
+import { supabase } from "../supabaseClient";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -47,10 +47,7 @@ const Dashboard = () => {
   const fetchCourses = async () => {
     if (!user) return; // Agar foydalanuvchi fio bo‘lmasa, hech narsa qilinmaydi
     setLoading(true);
-    const { data, error } = await supabase
-      .from("courses")
-      .select("*")
-      .eq("teacher", user.fio); // faqat author = fio bo'lgan kurslarni olamiz
+    const { data, error } = await supabase.from("courses").select("*");
 
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);
@@ -107,16 +104,6 @@ const Dashboard = () => {
         .getPublicUrl(`banners/${courseId}/${banner.name}`).data.publicUrl
     }`;
 
-    // Insert course into database
-    const { error: insertError } = await supabase.from("courses").insert([
-      {
-        course_id: courseId,
-        name: courseName,
-        banner_url: bannerUrl,
-        teacher: user.fio,
-        kurs: kurs,
-      },
-    ]);
 
     if (insertError) {
       setLoading(false);
@@ -136,41 +123,8 @@ const Dashboard = () => {
 
   return (
     <div className="p-10">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button>Yaratish</Button>
-        </DialogTrigger>
-        <DialogTitle></DialogTitle>
-        <DialogContent>
-          <Input
-            type="text"
-            placeholder="Course Name"
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
-          />
-          <Select defaultValue={kurs} onValueChange={setKurs}>
-            <SelectTrigger>
-              <SelectValue placeholder={kurs} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1-kurs">1 Kurs</SelectItem>
-              <SelectItem value="2-kurs">2 Kurs</SelectItem>
-              <SelectItem value="3-kurs">3 Kurs</SelectItem>
-              <SelectItem value="4-kurs">4 Kurs</SelectItem>
-              <SelectItem value="5-kurs">5 Kurs</SelectItem>
-              <SelectItem value="6-kurs">6 Kurs</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Input type="file" accept="image/*" onChange={handleFileChange} />
-          <Button onClick={handleAddCourse} disabled={loading}>
-            {loading ? "Yaratilmoqda..." : "Yaratish"}
-          </Button>
-        </DialogContent>
-      </Dialog>
-
       <div className="w-full">
-        <h2 className="text-lg font-bold">Courses</h2>
+        <h2 className="text-lg font-bold">Fanlar</h2>
         <div className="grid grid-cols-5 gap-5">
           {courses.map((course) => (
             <Link
