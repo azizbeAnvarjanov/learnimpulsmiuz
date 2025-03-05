@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "react-hot-toast";
 import { supabase } from "../../supabaseClient";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -118,7 +119,43 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <>loading...</>;
+    return (
+      <div className="p-5">
+        <Skeleton className="w-[200px] h-[10px] rounded-full" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          <div className="py-5 space-y-3">
+            <Skeleton className="w-[250px] h-[125px] rounded-lg" />
+            <Skeleton className="w-[180px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[150px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[120px] h-[10px] rounded-lg" />
+          </div>
+          <div className="py-5 space-y-3">
+            <Skeleton className="w-[250px] h-[125px] rounded-lg" />
+            <Skeleton className="w-[180px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[150px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[120px] h-[10px] rounded-lg" />
+          </div>
+          <div className="py-5 space-y-3">
+            <Skeleton className="w-[250px] h-[125px] rounded-lg" />
+            <Skeleton className="w-[180px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[150px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[120px] h-[10px] rounded-lg" />
+          </div>
+          <div className="py-5 space-y-3">
+            <Skeleton className="w-[250px] h-[125px] rounded-lg" />
+            <Skeleton className="w-[180px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[150px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[120px] h-[10px] rounded-lg" />
+          </div>
+          <div className="py-5 space-y-3">
+            <Skeleton className="w-[250px] h-[125px] rounded-lg" />
+            <Skeleton className="w-[180px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[150px] h-[10px] rounded-lg" />
+            <Skeleton className="w-[120px] h-[10px] rounded-lg" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

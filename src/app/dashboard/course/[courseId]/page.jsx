@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import UpdateCourseName from "@/components/UpdateCourseName";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CoursePage() {
   const params = useParams();
@@ -33,6 +34,7 @@ export default function CoursePage() {
   const [description, setDescription] = useState("");
   const [videoLink, setVideoLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingTopics, setLoadingTopics] = useState(false);
   const [open, setOpen] = useState(false);
   const [edit_open, setEdit_Open] = useState(false);
   const [editingTopic, setEditingTopic] = useState(null);
@@ -222,7 +224,41 @@ export default function CoursePage() {
 
   const sortingTopics = topics.sort((a, b) => a.order - b.order); // order bo‘yicha saralash
 
-  if (!course) return <p>Loading...</p>;
+  if (!course)
+    return (
+      <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
+        <div className="player-thumb w-full md:w-[75%] overflow-y-scroll scrollbar-hide max-h-screen">
+          <div className="flex items-center justify-between md:justify-start md:gap-3 p-3">
+            <Skeleton className="w-[40px] h-[40px] rounded-xl" />
+            <Skeleton className="w-[140px] h-[15px] rounded-xl" />
+            <Skeleton className="md:hidden w-[40px] h-[40px] rounded-xl " />
+          </div>
+          <div className="w-full h-[300px] md:h-[700px] overflow-hidden">
+            <Skeleton className="w-full h-full" />
+          </div>
+          <div className="p-3 space-y-3">
+            <Skeleton className="w-full mx-auto h-[100px] rounded-xl" />
+            <Skeleton className="w-full mx-auto h-[100px] rounded-xl" />
+            <Skeleton className="w-full mx-auto h-[100px] rounded-xl" />
+          </div>
+        </div>
+        <div className="w-full hidden md:block md:w-[25%] h-[100vh] border-l player-thumb overflow-y-scroll">
+          <div className="flex items-center gap-1 p-3 justify-between">
+            <Skeleton className="w-[140px] h-[15px] rounded-xl" />
+            <Skeleton className="w-[40px] h-[40px] rounded-xl" />
+          </div>
+          <div className="">
+            <Skeleton className="w-full h-[50px] border border-white rounded-none" />
+            <Skeleton className="w-full h-[50px] border border-white rounded-none" />
+            <Skeleton className="w-full h-[50px] border border-white rounded-none" />
+            <Skeleton className="w-full h-[50px] border border-white rounded-none" />
+            <Skeleton className="w-full h-[50px] border border-white rounded-none" />
+            <Skeleton className="w-full h-[50px] border border-white rounded-none" />
+            <Skeleton className="w-full h-[50px] border border-white rounded-none" />
+          </div>
+        </div>
+      </div>
+    );
 
   return (
     <div className="flex items-start">
