@@ -155,7 +155,7 @@ export default function CoursePage() {
           </div>
         </div>
       </div>
-      <div className="w-full hidden md:block md:w-[25%] max-h-[100vh] border-l player-thumb overflow-y-scroll">
+      <div className="w-full hidden md:block md:w-[25%] h-[100vh] border-l player-thumb overflow-y-scroll">
         <div className="flex items-center gap-1 p-3 justify-between">
           <strong className="mr-2">Mavzular</strong>
           <Button
@@ -177,7 +177,7 @@ export default function CoursePage() {
             >
               <div className="w-full">
                 <div>
-                  {topic.order}. {topic.name} a
+                  {topic.order}. {topic.name}
                 </div>
               </div>
             </li>
