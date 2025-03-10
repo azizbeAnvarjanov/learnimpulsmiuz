@@ -208,19 +208,19 @@ const TopicPage = () => {
     );
 
   return (
-    <div className="p-5 flex gap-4">
-      <div className="w-[65%]">
-        <div className=" text-2xl font-bold flex items-center gap-2">
+    <div className="flex">
+      <div className="w-[65%] border-r min-h-[100vh] overflow-y-scroll player-thumb">
+        <div className=" text-2xl font-bold flex items-center gap-2 p-2">
           <Link
             href={`/dashboard/course/${course_id}`}
             variant="outline"
-            className="bg-white border  flex items-center justify-center hover:bg-muted w-[45px] h-[45px] rounded-xl"
+            className="bg-white border  flex items-center justify-center hover:bg-muted w-[40px] h-[40px] rounded-xl"
           >
             <ChevronLeft />
           </Link>
           {topic.name}
         </div>
-        <div className="w-full h-[600px] overflow-hidden rounded-xl mt-3">
+        <div className="w-full h-[600px] overflow-hidden border-b">
           {topic.video_link && (
             <ReactPlayer
               url={topic.video_link}
@@ -230,28 +230,30 @@ const TopicPage = () => {
             />
           )}
         </div>
-        <div className="bg-muted p-3 border mt-4 rounded-xl">
-          <strong>Mavzu tafsifi</strong>
-          <p>{topic.description}</p>
-        </div>
-        <div className="bg-muted p-3 border mt-4 rounded-xl">
-          <div>
-            <div className="flex items-center gap-2">
-              {/* Fayl yuklash inputi */}
-              <TopicFiles topicId={topic_id} />
+        <div className="p-3">
+          <div className="bg-muted p-3 border">
+            <strong>Mavzu tafsifi</strong>
+            <p>{topic.description}</p>
+          </div>
+          <div className="bg-muted p-3 border">
+            <div>
+              <div className="flex items-center gap-2">
+                {/* Fayl yuklash inputi */}
+                <TopicFiles topicId={topic_id} />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 w-[35%]">
-        <div className="flex items-center gap-2">
+      <div className="w-[35%]">
+        <div className="flex items-center gap-2 border-b p-2">
           <h2 className="text-lg font-bold">Testlar</h2>
           <Button
-            variant="outline"
-            className="w-[45px] h-[45px] rounded-xl"
+            className="w-fit h-[40px] rounded-xl"
             onClick={() => setIsTestModalOpen(true)}
           >
+            Yangi test yaratish
             <CircleFadingPlus size={28} />
           </Button>
         </div>
@@ -263,16 +265,16 @@ const TopicPage = () => {
                 <p>Test uchun ajratilgan vaqt: {test.time_limit} daqiqa</p>
               </div>
               <Button
-                className="flex items-center"
+                className="flex items-center rounded-xl"
                 onClick={() => {
                   setSelectedTestId(test.id);
                   setIsQuestionModalOpen(true);
                 }}
               >
-                Savol <CircleFadingPlus />
+                Savol qo'shish <CircleFadingPlus />
               </Button>
             </div>
-            <div>
+            <div className="min-h-[100vh] overflow-y-scroll player-thumb">
               {test.questions.map((item, idx) => (
                 <div key={idx} className="p-3 border rounded-lg shadow-md mb-3">
                   <div className="flex items-center justify-between">

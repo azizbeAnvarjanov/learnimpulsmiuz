@@ -22,6 +22,7 @@ import {
 import { toast } from "react-hot-toast";
 import UpdateCourseName from "@/components/UpdateCourseName";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Label } from "@/components/ui/label";
 
 export default function CoursePage() {
   const params = useParams();
@@ -262,18 +263,19 @@ export default function CoursePage() {
 
   return (
     <div className="flex items-start">
-      <div className="w-[65%] p-5">
+      <div className="w-[65%] ">
         <UpdateCourseName course={course} />
         {/* 🔹 Banner */}
         <img
           src={course.banner_url}
           alt={course.name}
-          className="w-full h-[600px] object-cover mt-4 rounded-xl"
+          className="w-full h-[700px] object-cover"
         />
 
         {/* 🔹 Bannerni o‘zgartirish */}
-        <div className="mt-4 flex gap-2">
+        <div className="p-3 flex gap-2">
           <Input
+            className="w-[200px]"
             type="file"
             onChange={(e) => setNewBanner(e.target.files[0])}
           />
@@ -283,45 +285,58 @@ export default function CoursePage() {
         </div>
       </div>
 
-      <div className="w-[35%] p-5">
-        <div className="flex items-center gap-1">
+      <div className="w-[35%] border-l min-h-[100vh] overflow-y-scroll player-thumb">
+        <div className="flex items-center gap-1 border-b p-2">
           <strong className="mr-2">Mavzular </strong>
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button
-                className="w-[40px] h-[40px] rounded-xl"
-                variant="outline"
-              >
-                <CircleFadingPlus />
+              <Button className="w-[100px] h-[40px] rounded-xl">
+                Yaratish <CircleFadingPlus />
               </Button>
             </DialogTrigger>
             <DialogTitle></DialogTitle>
             <DialogContent>
-              <Input
-                type="number"
-                placeholder="Mavzu tartib raqami"
-                value={topicOrder}
-                onChange={(e) => setTopicOrder(e.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Mavzu nomi"
-                value={topicName}
-                onChange={(e) => setTopicName(e.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Mavzu tafsifi"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Video havolasi"
-                value={videoLink}
-                onChange={(e) => setVideoLink(e.target.value)}
-              />
+              <h1 className="font-bold">Yangi fan yaratish</h1>
+
+              <div>
+                <Label>Mavzu tartib raqami</Label>
+                <Input
+                  type="number"
+                  placeholder="Mavzu tartib raqami"
+                  value={topicOrder}
+                  onChange={(e) => setTopicOrder(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label>Mavzu nomi</Label>
+                <Input
+                  type="text"
+                  placeholder="Mavzu nomi"
+                  value={topicName}
+                  onChange={(e) => setTopicName(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label>Mavzu tafsifi</Label>
+
+                <Input
+                  type="text"
+                  placeholder="Mavzu tafsifi"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label>Video havolasi</Label>
+
+                <Input
+                  type="text"
+                  placeholder="Video havolasi"
+                  value={videoLink}
+                  onChange={(e) => setVideoLink(e.target.value)}
+                />
+              </div>
               <Button onClick={handleAddTopic} disabled={loading}>
                 {loading ? "Yaratilmoqda..." : "Mavzu yaratish"}
               </Button>
@@ -344,66 +359,73 @@ export default function CoursePage() {
               <CircleFadingPlus />
             </Button>
           </DialogTrigger>
-          <DialogTitle></DialogTitle>
+          <DialogTitle className="hidden"></DialogTitle>
           <DialogContent>
-            <h1>Ma'lumotlarni tahrirlash</h1>
-            <Input
-              type="number"
-              placeholder="Mavzu tarib raqami"
-              value={topicOrder}
-              onChange={(e) => setTopicOrder(e.target.value)}
-            />
-            <Input
-              type="text"
-              placeholder="Mavzu nomi"
-              value={topicName}
-              onChange={(e) => setTopicName(e.target.value)}
-            />
-            <Input
-              type="text"
-              placeholder="Mavzu tafsifi"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <Input
-              type="text"
-              placeholder="Video havolasi"
-              value={videoLink}
-              onChange={(e) => setVideoLink(e.target.value)}
-            />
+            <h1 className="font-bold">Ma'lumotlarni tahrirlash</h1>
+            <div>
+              <Label>Mavzu tarib raqami</Label>
+              <Input
+                type="number"
+                placeholder="Mavzu tarib raqami"
+                value={topicOrder}
+                onChange={(e) => setTopicOrder(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label>Mavzu nomi</Label>
+
+              <Input
+                type="text"
+                placeholder="Mavzu nomi"
+                value={topicName}
+                onChange={(e) => setTopicName(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label>Mavzu tafsifi</Label>
+
+              <Input
+                type="text"
+                placeholder="Mavzu tafsifi"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label>Video havolasi</Label>
+
+              <Input
+                type="text"
+                placeholder="Video havolasi"
+                value={videoLink}
+                onChange={(e) => setVideoLink(e.target.value)}
+              />
+            </div>
             <Button onClick={handleUpdate} disabled={loading}>
               {loading ? "Yaratilmoqda..." : "Mavzu yaratish"}
             </Button>
           </DialogContent>
         </Dialog>
 
-        <br />
-        <div>
-          <ul>
+        <div className="">
+          <ul className="grid gap-2 p-2">
             {sortingTopics.map((topic, idx) => (
               <li
                 key={idx}
-                className="flex items-center justify-between border py-3 px-4 my-2 rounded-lg"
+                className="flex items-center justify-between border py-2 px-2"
               >
                 <div className="w-full">
                   <Link
                     href={`/dashboard/course/${course_id}/topic/${topic.topic_id}`}
-                    className="font-bold"
+                    className="font-bold ml-2"
                   >
                     {topic.order}. {topic.name}
                   </Link>
-
-                  <p className="line-clamp-1 w-[90%]">{topic.description}</p>
                 </div>
-                <div className="flex items-center text-blue-500">
-                  <div className="flex items-center gap-1">
-                    <FileText />
-
-                    <strong>{topic.notes.length}</strong>
-                  </div>
+                <div className="flex items-center">
                   <Button
                     variant="outline"
-                    className="w-[35px] h-[35px] border ml-3"
+                    className="w-[35px] h-[35px] border"
                     onClick={() => handleEditClick(topic.topic_id)}
                   >
                     <PencilLine />

@@ -30,17 +30,17 @@ export default function UpdateCourseName({ course }) {
 
 
   return (
-    <div className="text-2xl font-bold flex items-center gap-2">
+    <div className="text-2xl font-bold flex items-center gap-2 p-2">
       <Link
         href={`/dashboard`}
-        className="bg-white border flex items-center justify-center hover:bg-muted w-[45px] h-[45px] rounded-xl"
+        className="bg-white border flex items-center justify-center hover:bg-muted w-[45px] h-[40px] rounded-xl"
       >
         <ChevronLeft />
       </Link>
       <Input
         value={newName}
         onChange={(e) => setNewName(e.target.value)}
-        className="font-bold text-xl"
+        className="font-bold text-xl border-none shadow-none"
       />
       <Button onClick={updateCourseName} disabled={isUpdating}>
         Saqlash

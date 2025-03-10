@@ -49,35 +49,57 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4">Talaba Login</h2>
-        {error && <p className="text-red-500">{error}</p>}
-        <Input
-          type="text"
-          placeholder="Talaba ID"
-          value={studentId}
-          onChange={(e) => setStudentId(e.target.value)}
-          className="w-full p-2 border rounded mb-2"
-        />
-        <Input
-          type="password"
-          placeholder="Parol"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-        />
-        <Button
-          onClick={handleLogin}
-          className="w-full text-white py-2 rounded"
-        >
-          Kirish
-        </Button>
-        <Link
-          href="/employeesLogin"
-          className="mt-3 text-center flex w-full justify-center"
-        >
-          Xodim sifatida kirish
-        </Link>
+      <div className="flex items-center w-full justify-center min-h-screen bg-[#eeeeee]">
+        <div className="flex flex-col-reverse md:flex-row w-[800px] md:shadow-lg rounded-2xl overflow-hidden">
+          {/* Left Section - Login Form */}
+          <div className="w-[90%] lg:w-1/2 rounded-xl mx-auto bg-white p-8 flex flex-col justify-center">
+            <h2 className="text-2xl font-bold text-center">Kirish</h2>
+            <p className="text-sm text-gray-500 text-center">
+              Talaba sifatida tizimga kirish!
+            </p>
+
+            <div className="bg-white mt-3 rounded-lg">
+              {error && <p className="text-red-500">{error}</p>}
+              <Input
+                type="text"
+                placeholder="Talaba ID"
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
+                className="w-full p-2 border rounded mb-2"
+              />
+              <Input
+                type="password"
+                placeholder="Parol"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 border rounded mb-4"
+              />
+              <Button
+                onClick={handleLogin}
+                className="w-full text-white py-2 rounded"
+              >
+                Kirish
+              </Button>
+              <Link
+                href="/employeesLogin"
+                className="mt-3 text-center flex w-full justify-center text-gray-500 my-4"
+              >
+                Xodim sifatida kirish
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Section - Image */}
+          <div className="w-1/2 bg-gradient-to-br from-purple-500 hidden md:block h-[500px] to-indigo-500 items-center justify-center relative">
+            <div className="absolute w-[100%] h-[100%] bg-white rounded-xl flex items-center justify-center shadow-lg">
+              <img
+                src="/student.jpg"
+                alt="User"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

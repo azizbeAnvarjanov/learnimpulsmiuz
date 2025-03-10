@@ -11,14 +11,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
 import { supabase } from "@/app/supabaseClient";
-import { FileText, Trash } from "lucide-react";
+import { CircleFadingPlus, FileText, Trash } from "lucide-react";
 import Link from "next/link";
+import { Label } from "./ui/label";
 
 export default function TopicFiles({ topicId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   console.log(notes);
 
@@ -45,7 +47,9 @@ export default function TopicFiles({ topicId }) {
   }, [topicId]);
 
   const handleFileUpload = async () => {
+    setLoading(true);
     if (!file || !fileName) {
+      setLoading(false);
       toast.error("Fayl va nomni kiriting!");
       return;
     }
@@ -76,8 +80,10 @@ export default function TopicFiles({ topicId }) {
       .eq("topic_id", topicId);
 
     if (updateError) {
+      setLoading(false);
       toast.error("Maʼlumotlar bazasini yangilashda xatolik!");
     } else {
+      setLoading(false);
       toast.success("Fayl muvaffaqiyatli yuklandi!");
     }
 
@@ -98,8 +104,7 @@ export default function TopicFiles({ topicId }) {
 
       const decodedUrl = decodeURIComponent(fileUrl); // URL ni dekodlash
       const parts = decodedUrl.split("/"); // URL bo‘laklarga ajratish
-      const fileName = parts[parts.length - 1]
-
+      const fileName = parts[parts.length - 1];
 
       // Faylni Supabase storage dan o‘chirish
       const { error: deleteError } = await supabase.storage
@@ -135,19 +140,29 @@ export default function TopicFiles({ topicId }) {
 
   return (
     <div className="w-full">
-      <Button onClick={() => setIsOpen(true)}>Fayl qo‘shish</Button>
+      <Button className="rounded-xl" onClick={() => setIsOpen(true)}>
+        Fayl qo‘shish <CircleFadingPlus size={28} />
+      </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Fayl yuklash</DialogTitle>
           </DialogHeader>
-          <Input
-            placeholder="Fayl nomi"
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
-          />
-          <Input type="file" onChange={(e) => setFile(e.target.files[0])} />
-          <Button onClick={handleFileUpload}>Yuklash</Button>
+          <div>
+            <Label>Fayl nomi</Label>
+            <Input
+              placeholder="Fayl nomi"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+            />
+          </div>
+          <div>
+            <Label>Fileni tanlang</Label>
+            <Input type="file" onChange={(e) => setFile(e.target.files[0])} />
+          </div>
+          <Button onClick={handleFileUpload} disabled={loading}>{`${
+            loading ? "Yuklanmoqda...." : "Yuklash"
+          }`}</Button>
         </DialogContent>
       </Dialog>
       <ul>

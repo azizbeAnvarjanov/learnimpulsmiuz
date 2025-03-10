@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import DashboardNavbar from "./DashboardNavbar";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -82,7 +83,7 @@ const Dashboard = () => {
     setBanner(event.target.files[0]);
   };
 
-  const generateCourseId = (name) => {
+  const generateCourseId = () => {
     return Math.floor(100000000 + Math.random() * 900000000);
   };
 
@@ -172,65 +173,69 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-10">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button>Yangi fan yaratish</Button>
-        </DialogTrigger>
-        <DialogTitle></DialogTitle>
-        <DialogContent>
-          <Input
-            type="text"
-            placeholder="Course Name"
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
-          />
-          <Select defaultValue={kurs} onValueChange={setKurs}>
-            <SelectTrigger>
-              <SelectValue placeholder={kurs} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1-kurs">1 Kurs</SelectItem>
-              <SelectItem value="2-kurs">2 Kurs</SelectItem>
-              <SelectItem value="3-kurs">3 Kurs</SelectItem>
-              <SelectItem value="4-kurs">4 Kurs</SelectItem>
-              <SelectItem value="5-kurs">5 Kurs</SelectItem>
-              <SelectItem value="6-kurs">6 Kurs</SelectItem>
-            </SelectContent>
-          </Select>
+    <div>
+      <DashboardNavbar />
 
-          <Input type="file" accept="image/*" onChange={handleFileChange} />
-          <Button onClick={handleAddCourse} disabled={loading}>
-            {loading ? "Yaratilmoqda..." : "Yaratish"}
-          </Button>
-        </DialogContent>
-      </Dialog>
+      <div className="p-10">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button>Yangi fan yaratish</Button>
+          </DialogTrigger>
+          <DialogTitle></DialogTitle>
+          <DialogContent>
+            <Input
+              type="text"
+              placeholder="Course Name"
+              value={courseName}
+              onChange={(e) => setCourseName(e.target.value)}
+            />
+            <Select defaultValue={kurs} onValueChange={setKurs}>
+              <SelectTrigger>
+                <SelectValue placeholder={kurs} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1-kurs">1 Kurs</SelectItem>
+                <SelectItem value="2-kurs">2 Kurs</SelectItem>
+                <SelectItem value="3-kurs">3 Kurs</SelectItem>
+                <SelectItem value="4-kurs">4 Kurs</SelectItem>
+                <SelectItem value="5-kurs">5 Kurs</SelectItem>
+                <SelectItem value="6-kurs">6 Kurs</SelectItem>
+              </SelectContent>
+            </Select>
 
-      <div className="w-full">
-        <h2 className="text-lg font-bold">Siz yaratgan fanlar</h2>
-        <div className="grid grid-cols-5 gap-5">
-          {courses.map((course) => (
-            <Link
-              href={`/dashboard/course/${course.course_id}`}
-              key={course.id}
-              className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
-            >
-              <img
-                src={course.banner_url}
-                alt={course.name}
-                className="w-full h-[200px] object-cover rounded-t-md"
-              />
-              <div className="p-4">
-                <p className="font-bold text-xl">{course.name}</p>
-                <p>
-                  <strong>Author:</strong> {course.teacher}
-                </p>
-                <p>
-                  <strong>Kurs:</strong> {course.kurs}
-                </p>
-              </div>
-            </Link>
-          ))}
+            <Input type="file" accept="image/*" onChange={handleFileChange} />
+            <Button onClick={handleAddCourse} disabled={loading}>
+              {loading ? "Yaratilmoqda..." : "Yaratish"}
+            </Button>
+          </DialogContent>
+        </Dialog>
+
+        <div className="w-full">
+          <h2 className="text-lg font-bold">Siz yaratgan fanlar</h2>
+          <div className="grid grid-cols-5 gap-5">
+            {courses.map((course) => (
+              <Link
+                href={`/dashboard/course/${course.course_id}`}
+                key={course.id}
+                className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
+              >
+                <img
+                  src={course.banner_url}
+                  alt={course.name}
+                  className="w-full h-[200px] object-cover rounded-t-md"
+                />
+                <div className="p-4">
+                  <p className="font-bold text-xl">{course.name}</p>
+                  <p>
+                    <strong>Author:</strong> {course.teacher}
+                  </p>
+                  <p>
+                    <strong>Kurs:</strong> {course.kurs}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>
