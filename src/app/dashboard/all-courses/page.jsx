@@ -21,6 +21,7 @@ import {
 import { toast } from "react-hot-toast";
 import { supabase } from "../../supabaseClient";
 import { Skeleton } from "@/components/ui/skeleton";
+import DashboardNavbar from "../DashboardNavbar";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -105,7 +106,6 @@ const Dashboard = () => {
         .getPublicUrl(`banners/${courseId}/${banner.name}`).data.publicUrl
     }`;
 
-
     if (insertError) {
       setLoading(false);
       return toast.error("Error adding course");
@@ -159,32 +159,35 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-10">
-      <div className="w-full">
-        <h2 className="text-lg font-bold">Fanlar</h2>
-        <div className="grid grid-cols-5 gap-5">
-          {courses.map((course) => (
-            <Link
-              href={`/dashboard/course/${course.course_id}`}
-              key={course.id}
-              className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
-            >
-              <img
-                src={course.banner_url}
-                alt={course.name}
-                className="w-full h-[200px] object-cover rounded-t-md"
-              />
-              <div className="p-4">
-                <p className="font-bold text-xl">{course.name}</p>
-                <p>
-                  <strong>Author:</strong> {course.teacher}
-                </p>
-                <p>
-                  <strong>Kurs:</strong> {course.kurs}
-                </p>
-              </div>
-            </Link>
-          ))}
+    <div>
+      <DashboardNavbar />
+      <div className="p-10">
+        <div className="w-full">
+          <h2 className="text-lg font-bold">Fanlar</h2>
+          <div className="grid grid-cols-5 gap-5">
+            {courses.map((course) => (
+              <Link
+                href={`/dashboard/course/${course.course_id}`}
+                key={course.id}
+                className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
+              >
+                <img
+                  src={course.banner_url}
+                  alt={course.name}
+                  className="w-full h-[200px] object-cover rounded-t-md"
+                />
+                <div className="p-4">
+                  <p className="font-bold text-xl">{course.name}</p>
+                  <p>
+                    <strong>Author:</strong> {course.teacher}
+                  </p>
+                  <p>
+                    <strong>Kurs:</strong> {course.kurs}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>

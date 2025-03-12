@@ -224,7 +224,7 @@ const TopicPage = () => {
 
   return (
     <div className="flex">
-      <div className="w-[65%] border-r min-h-[100vh] overflow-y-scroll player-thumb">
+      <div className="w-[75%] border-r min-h-[100vh] overflow-y-scroll player-thumb">
         <div className=" text-2xl font-bold flex items-center gap-2 p-2">
           <Link
             href={`/dashboard/course/${course_id}`}
@@ -261,7 +261,7 @@ const TopicPage = () => {
         </div>
       </div>
 
-      <div className="w-[35%]">
+      <div className="w-[25%]">
         <div className="flex items-center gap-2 border-b p-2">
           <h2 className="text-lg font-bold">Testlar</h2>
           <Button

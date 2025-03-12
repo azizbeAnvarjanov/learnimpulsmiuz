@@ -146,7 +146,7 @@ export default function CoursePage() {
           >
             <ChevronLeft />
           </Link>
-          <h1 className="font-bold text-2xl">{course.name}</h1>
+          <h1 className="font-bold text-[15px] md:text-2xl">{course.name}</h1>
           <TopicsSheet
             course_id={course_id}
             selectedTopic={selectedTopic}

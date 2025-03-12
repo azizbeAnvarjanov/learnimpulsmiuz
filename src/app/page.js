@@ -111,8 +111,8 @@ const Home = () => {
         {["1", "2", "3", "4", "5", "6"].map((num) => (
           <Label
             key={num}
-            className={`flex items-center gap-2 border py-2 px-4 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white ${
-              kurs === `${num}-kurs` ? "bg-blue-500 text-white shadow-xl" : ""
+            className={`flex items-center gap-2 border py-2 px-4 rounded-xl cursor-pointer hover:bg-blue-500 hover:text-white transition-all ${
+              kurs === `${num}-kurs` ? "bg-blue-500 text-white shadow-xl" : "border-dashed"
             }`}
           >
             <Input

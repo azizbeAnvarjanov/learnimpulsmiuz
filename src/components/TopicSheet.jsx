@@ -53,9 +53,6 @@ export default function TopicsSheet({
         <SheetContent side="right" className="overflow-y-scroll">
           <div className="flex items-center justify-between p-2">
             <strong className="text-lg">Mavzular</strong>
-            <Button variant="outline" onClick={fetchTopics}>
-              <RefreshCcw />
-            </Button>
           </div>
           <Accordion type="single" collapsible>
             {topics.map((topic, idx) => (
@@ -79,7 +76,10 @@ export default function TopicsSheet({
                         : "bg-white"
                     }`}
                   >
-                    <Video /> <h1 className="font-bold">{topic.name}</h1>
+                    <div className="w-[10%] h-[40px] grid place-items-center">
+                      <Video />
+                    </div>{" "}
+                    <h1 className="font-bold w-[90%]">{topic.name}</h1>
                   </div>
                   {selectedTopic?.notes.map((file, idx) => (
                     <Link

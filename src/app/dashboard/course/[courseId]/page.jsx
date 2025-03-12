@@ -264,13 +264,13 @@ export default function CoursePage() {
 
   return (
     <div className="flex items-start">
-      <div className="w-[65%] ">
+      <div className="w-[75%] ">
         <UpdateCourseName course={course} />
         {/* 🔹 Banner */}
         <img
           src={course.banner_url}
           alt={course.name}
-          className="w-full h-[700px] object-cover"
+          className="w-full h-[700px] object-cover border-t border-b"
         />
 
         {/* 🔹 Bannerni o‘zgartirish */}
@@ -287,7 +287,7 @@ export default function CoursePage() {
         </div>
       </div>
 
-      <div className="w-[35%] border-l min-h-[100vh] overflow-y-scroll player-thumb">
+      <div className="w-[25%] border-l min-h-[100vh] overflow-y-scroll player-thumb">
         <div className="flex items-center gap-1 border-b p-2">
           <strong className="mr-2">Mavzular </strong>
 
@@ -415,12 +415,12 @@ export default function CoursePage() {
             {sortingTopics.map((topic, idx) => (
               <li
                 key={idx}
-                className="flex items-center justify-between border py-2 px-2"
+                className="flex items-center justify-between border rounded-md py-2 px-2"
               >
-                <div className="w-full">
+                <div className="w-[90%]">
                   <Link
                     href={`/dashboard/course/${course_id}/topic/${topic.topic_id}`}
-                    className="font-bold ml-2"
+                    className="font-bold ml-2 line-clamp-1"
                   >
                     {topic.order}. {topic.name}
                   </Link>

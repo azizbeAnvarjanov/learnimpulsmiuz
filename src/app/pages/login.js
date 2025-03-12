@@ -43,6 +43,8 @@ export default function LoginPage() {
       setUser(parsedUser);
       if (user) {
         router.push("/");
+      } else {
+        router.push("/");
       }
     }
   }, []);
