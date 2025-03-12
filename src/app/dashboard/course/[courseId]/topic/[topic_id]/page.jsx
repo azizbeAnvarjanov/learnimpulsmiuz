@@ -25,6 +25,14 @@ import { toast } from "react-hot-toast";
 
 import TopicFiles from "@/components/TopicFiles";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const TopicPage = () => {
   const params = useParams();
@@ -39,7 +47,7 @@ const TopicPage = () => {
   const [selectedTestId, setSelectedTestId] = useState(null);
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
-  const [correct, setCorrect] = useState(0);
+  const [correct, setCorrect] = useState(1);
 
   useEffect(() => {
     if (topic_id) {
@@ -171,6 +179,13 @@ const TopicPage = () => {
     return { name: file.name, link: publicUrl };
   };
 
+  const handleCheckboxChange = (idx) => {
+    if (correct === idx) {
+      setCorrect(null); // Agar tanlangan checkbox yana bosilsa, to'g'ri javobni o'chirish
+    } else {
+      setCorrect(idx); // Yangi variantni to'g'ri javob qilib belgilash
+    }
+  };
   if (!topic)
     return (
       <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
@@ -218,7 +233,7 @@ const TopicPage = () => {
           >
             <ChevronLeft />
           </Link>
-          {topic.name}
+          <h1 className="line-clamp-1">{topic.name}</h1>
         </div>
         <div className="w-full h-[600px] overflow-hidden border-b">
           {topic.video_link && (
@@ -250,10 +265,10 @@ const TopicPage = () => {
         <div className="flex items-center gap-2 border-b p-2">
           <h2 className="text-lg font-bold">Testlar</h2>
           <Button
-            className="w-fit h-[40px] rounded-xl"
+            className="w-fit h-[40px] px-4 py-0 text-sm rounded-xl"
             onClick={() => setIsTestModalOpen(true)}
           >
-            Yangi test yaratish
+            Yaratish
             <CircleFadingPlus size={28} />
           </Button>
         </div>
@@ -276,34 +291,21 @@ const TopicPage = () => {
             </div>
             <div className="min-h-[100vh] overflow-y-scroll player-thumb">
               {test.questions.map((item, idx) => (
-                <div key={idx} className="p-3 border rounded-lg shadow-md mb-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-bold">{item.question}</h3>
-                    <div className="text-green-600 font-semibold">
-                      To'g'ri javob: {item.answer}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 py-2 ">
-                    {[
-                      item.optionA,
-                      item.optionB,
-                      item.optionC,
-                      item.optionD,
-                    ].map((option, idx) => (
-                      <div
-                        key={idx}
-                        className={`text-center border p-2 rounded-md ${
-                          option === item.answer
-                            ? "bg-green-100 font-semibold"
-                            : ""
-                        }`}
-                      >
-                        {option}
-                      </div>
-                    ))}
+                <div
+                  key={idx}
+                  className="p-3 border rounded-lg shadow-md mb-3 flex items-center justify-between"
+                >
+                  <div className="flex items-center justify-between w-[90%]">
+                    <h3 className="font-bold line-clamp-1">{item.question}</h3>
                   </div>
 
                   <div className="flex items-center gap-2">
+                    <EditQuestionDialog
+                      testId={test.id}
+                      questionId={item.question_id}
+                      tests={tests}
+                      setTests={setTests}
+                    />
                     <Button
                       variant="destructive"
                       onClick={() =>
@@ -312,12 +314,6 @@ const TopicPage = () => {
                     >
                       <Trash />
                     </Button>
-                    <EditQuestionDialog
-                      testId={test.id}
-                      questionId={item.question_id}
-                      tests={tests}
-                      setTests={setTests}
-                    />
                   </div>
                 </div>
               ))}
@@ -374,28 +370,39 @@ const TopicPage = () => {
             <div className="space-y-2">
               <h2 className="text-lg font-bold">Savol qo'shish</h2>
               <Input
-                placeholder="Question"
+                placeholder="Savol"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
               />
               {options.map((opt, idx) => (
-                <Input
-                  key={idx}
-                  placeholder={`Option ${idx + 1}`}
-                  value={opt}
-                  onChange={(e) => {
-                    const newOptions = [...options];
-                    newOptions[idx] = e.target.value;
-                    setOptions(newOptions);
-                  }}
-                />
+                <div key={idx} className="flex items-center gap-2">
+                  {idx + 1}
+                  <Input
+                    placeholder={`Variant ${idx + 1}`}
+                    value={opt}
+                    onChange={(e) => {
+                      const newOptions = [...options];
+                      newOptions[idx] = e.target.value;
+                      setOptions(newOptions);
+                    }}
+                  />
+                </div>
               ))}
-              <Input
-                type="number"
-                placeholder="Correct Answer (0-3)"
-                value={correct}
-                onChange={(e) => setCorrect(parseInt(e.target.value, 10))}
-              />
+
+              <div className="grid grid-cols-2 items-center gap-2">
+                <h1>To'g'ri variant tartib raqami:</h1>
+                <Select defaultValue={correct} onValueChange={setCorrect}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="To'gri variant tanlang" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="flex items-center gap-2">
                 <Button onClick={handleAddQuestion}>Qo'shish</Button>
                 <Button

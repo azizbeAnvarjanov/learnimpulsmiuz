@@ -277,6 +277,7 @@ export default function CoursePage() {
           <Input
             className="w-[200px]"
             type="file"
+            accept="image/png, image/jpeg"
             onChange={(e) => setNewBanner(e.target.files[0])}
           />
           <Button onClick={updateCourseBanner} disabled={isUpdating}>

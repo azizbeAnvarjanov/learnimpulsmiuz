@@ -6,11 +6,24 @@ import { useParams } from "next/navigation";
 import { supabase } from "@/app/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, RefreshCcw, SquareArrowOutUpRight } from "lucide-react";
+import {
+  BookOpenCheck,
+  ChevronLeft,
+  Paperclip,
+  RefreshCcw,
+  SquareArrowOutUpRight,
+  Video,
+} from "lucide-react";
 import ReactPlayer from "react-player";
 import { toast } from "react-hot-toast";
 import TopicsSheet from "@/components/TopicSheet";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function CoursePage() {
   const params = useParams();
@@ -84,6 +97,9 @@ export default function CoursePage() {
     fetchTest(topic.topic_id);
   };
 
+
+
+
   if (loading)
     return (
       <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
@@ -120,8 +136,6 @@ export default function CoursePage() {
       </div>
     );
 
-
-
   return (
     <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
       <div className="player-thumb w-full md:w-[75%] overflow-y-scroll scrollbar-hide max-h-screen">
@@ -137,6 +151,7 @@ export default function CoursePage() {
             course_id={course_id}
             selectedTopic={selectedTopic}
             handleTopicClick={handleTopicClick}
+            test={test}
           />
         </div>
 
@@ -156,44 +171,6 @@ export default function CoursePage() {
             <h1 className="font-bold">Mavzu tafsivi</h1>
             {selectedTopic?.description}{" "}
           </div>
-          <div className="grid md:grid-cols-2 gap-5 py-5">
-            <div className="">
-              <h2 className="font-bold text-xl">Fayllar</h2>
-              {selectedTopic?.notes.length === 0 && <>fayl mavjudmas</>}
-              {selectedTopic?.notes.map((file, idx) => (
-                <Link
-                  target="_blank"
-                  className="border w-full bg-muted flex p-4 rounded-md mt-2 items-center justify-between"
-                  href={`${file.url}`}
-                  key={idx}
-                >
-                  {file.name}
-                  <SquareArrowOutUpRight />
-                </Link>
-              ))}
-            </div>
-            <div className="">
-              <h2 className="font-bold text-xl">Test</h2>
-              {test !== null ? (
-                <div className="border w-full bg-muted flex p-4 rounded-md mt-2 justify-between items-center">
-                  <div>
-                    <p>
-                      <strong>Test nomi:</strong> {test.name}
-                    </p>
-                    <p>
-                      <strong>Test savollar soni:</strong>{" "}
-                      {test.questions.length} ta
-                    </p>
-                    <Link href={`/test/${test.id}`} className="">
-                      <Button variant="outline">Testni boshlash</Button>
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                <p>Test mavjud emas</p>
-              )}
-            </div>
-          </div>
         </div>
       </div>
       <div className="w-full hidden md:block md:w-[25%] h-[100vh] border-l player-thumb overflow-y-scroll">
@@ -207,8 +184,55 @@ export default function CoursePage() {
             <RefreshCcw />
           </Button>
         </div>
-        <ul className="">
+        <Accordion type="single" collapsible>
           {topics.map((topic, idx) => (
+            <AccordionItem
+              key={idx}
+              value={`item-${idx + 1}`}
+              onClick={() => handleTopicClick(topic)}
+              className="cursor-pointer"
+            >
+              <AccordionTrigger className="px-4">
+                {topic.order}. {topic.name}
+              </AccordionTrigger>
+              <AccordionContent className="bg-muted p-2 space-y-1">
+                <div
+                  className={`flex items-center gap-2 border p-3 rounded-lg ${
+                    selectedTopic?.topic_id === topic.topic_id
+                      ? "bg-green-300"
+                      : "bg-white"
+                  }`}
+                >
+                  <Video /> <h1 className="font-bold">{topic.name}</h1>
+                </div>
+                {selectedTopic?.notes.map((file, idx) => (
+                  <Link
+                    target="_blank"
+                    className="flex items-center gap-2 border p-3 rounded-lg bg-white"
+                    href={`${file.url}`}
+                    key={idx}
+                  >
+                    <Paperclip />
+                    <h1 className="font-bold">{file.name}</h1>
+                  </Link>
+                ))}
+                {test !== null && (
+                  <Link
+                    href={`/test/${test.id}`}
+                    className="flex items-center gap-2 border p-3 rounded-lg bg-white"
+                  >
+                    <div className="flex items-center gap-2">
+                      <BookOpenCheck />
+                      <h1 className="font-bold">{test.name}</h1>
+                    </div>
+                  </Link>
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        {/* {topics.map((topic, idx) => (
             <li
               key={idx}
               className={`flex items-center cursor-pointer justify-between border-t py-3 px-4 ${
@@ -222,8 +246,7 @@ export default function CoursePage() {
                 </div>
               </div>
             </li>
-          ))}
-        </ul>
+          ))} */}
       </div>
     </div>
   );

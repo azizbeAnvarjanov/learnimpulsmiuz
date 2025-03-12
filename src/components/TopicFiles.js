@@ -158,7 +158,11 @@ export default function TopicFiles({ topicId }) {
           </div>
           <div>
             <Label>Fileni tanlang</Label>
-            <Input type="file" onChange={(e) => setFile(e.target.files[0])} />
+            <Input
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
           </div>
           <Button onClick={handleFileUpload} disabled={loading}>{`${
             loading ? "Yuklanmoqda...." : "Yuklash"
