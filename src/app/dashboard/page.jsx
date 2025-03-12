@@ -52,7 +52,7 @@ const Dashboard = () => {
     const { data, error } = await supabase
       .from("courses")
       .select("*")
-      .eq("teacher", user.fio); // faqat author = fio bo'lgan kurslarni olamiz
+      .eq("teacher", user.login); // faqat author = fio bo'lgan kurslarni olamiz
 
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);
@@ -115,7 +115,7 @@ const Dashboard = () => {
         course_id: courseId,
         name: courseName,
         banner_url: bannerUrl,
-        teacher: user.fio,
+        teacher: user.login,
         kurs: kurs,
       },
     ]);
@@ -215,7 +215,6 @@ const Dashboard = () => {
         </Dialog>
 
         <div className="w-full">
-          <h2 className="text-lg font-bold">Siz yaratgan fanlar</h2>
           <div className="grid grid-cols-5 gap-5">
             {courses.map((course) => (
               <Link
@@ -230,9 +229,6 @@ const Dashboard = () => {
                 />
                 <div className="p-4">
                   <p className="font-bold text-xl">{course.name}</p>
-                  <p>
-                    <strong>Author:</strong> {course.teacher}
-                  </p>
                   <p>
                     <strong>Kurs:</strong> {course.kurs}
                   </p>
