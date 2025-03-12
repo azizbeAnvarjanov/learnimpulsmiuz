@@ -144,7 +144,6 @@ const Home = () => {
             <div className="p-4">
               <p className="font-bold text-xl">{course.name}</p>
               <p>
-                <strong>Author:</strong> {course.teacher}
               </p>
               <p>
                 <strong>Kurs:</strong> {course.kurs}
