@@ -208,7 +208,7 @@ export default function CoursePage() {
                 {selectedTopic?.notes.map((file, idx) => (
                   <Link
                     target="_blank"
-                    className="flex items-center gap-2 border p-3 rounded-lg bg-white"
+                    className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                     href={`${file.url}`}
                     key={idx}
                   >
@@ -219,7 +219,7 @@ export default function CoursePage() {
                 {test !== null && (
                   <Link
                     href={`/test/${test.id}`}
-                    className="flex items-center gap-2 border p-3 rounded-lg bg-white"
+                    className="flex hover:bg-muted items-center gap-2 border p-3 rounded-lg bg-white"
                   >
                     <div className="flex items-center gap-2">
                       <BookOpenCheck />

@@ -23,6 +23,7 @@ import { toast } from "react-hot-toast";
 import UpdateCourseName from "@/components/UpdateCourseName";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function CoursePage() {
   const params = useParams();
@@ -385,9 +386,10 @@ export default function CoursePage() {
             <div>
               <Label>Mavzu tafsifi</Label>
 
-              <Input
+              <Textarea
                 type="text"
                 placeholder="Mavzu tafsifi"
+                className="h-[20vh]"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />

@@ -203,7 +203,11 @@ const Dashboard = () => {
               </SelectContent>
             </Select>
 
-            <Input type="file" accept="image/*" onChange={handleFileChange} />
+            <Input
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={handleFileChange}
+            />
             <Button onClick={handleAddCourse} disabled={loading}>
               {loading ? "Yaratilmoqda..." : "Yaratish"}
             </Button>
