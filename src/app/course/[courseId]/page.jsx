@@ -138,7 +138,6 @@ export default function CoursePage() {
       </div>
     );
 
-  console.log(selectedTopic?.notes[0].url);
 
   return (
     <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
@@ -183,7 +182,7 @@ export default function CoursePage() {
                   <X />
                 </Button>
                 <iframe
-                  src={selectedTopic?.notes[0].url}
+                  src={selectedTopic?.notes[0]?.url}
                   className="w-full h-screen"
                 />
               </div>
