@@ -16,7 +16,7 @@ import Link from "next/link";
 import { Label } from "./ui/label";
 import Image from "next/image";
 
-export default function TopicFiles({ topicId }) {
+export default function UploadPPT({ topicId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
@@ -29,7 +29,7 @@ export default function TopicFiles({ topicId }) {
     const fetchNotes = async () => {
       const { data, error } = await supabase
         .from("topics")
-        .select("notes")
+        .select("ppts")
         .eq("topic_id", topicId)
         .single();
 
@@ -37,7 +37,7 @@ export default function TopicFiles({ topicId }) {
         toast.error("Fayllarni olishda xatolik!");
       } else {
         try {
-          setNotes(data.notes);
+          setNotes(data.ppts);
         } catch {
           setNotes([]);
         }
@@ -55,20 +55,20 @@ export default function TopicFiles({ topicId }) {
       return;
     }
 
-    const filePath = `notes/${topicId}/${file.name}`;
+    const filePath = `ppts/${topicId}/${file.name}`;
     const { data, error } = await supabase.storage
-      .from("notes")
+      .from("ppts")
       .upload(filePath, file);
     if (error) {
       toast.error("Fayl yuklashda xatolik!");
       return;
     }
 
-    const { publicURL } = supabase.storage.from("notes").getPublicUrl(filePath);
+    const { publicURL } = supabase.storage.from("ppts").getPublicUrl(filePath);
     const fileUrl = `${
       supabase.storage
-        .from("notes")
-        .getPublicUrl(`notes/${topicId}/${file.name}`).data.publicUrl
+        .from("ppts")
+        .getPublicUrl(`ppts/${topicId}/${file.name}`).data.publicUrl
     }`;
     const newNote = { name: fileName, url: fileUrl };
 
@@ -77,7 +77,7 @@ export default function TopicFiles({ topicId }) {
 
     const { error: updateError } = await supabase
       .from("topics")
-      .update({ notes: updatedNotes }) // JSON.stringify kerak emas
+      .update({ ppts: updatedNotes }) // JSON.stringify kerak emas
       .eq("topic_id", topicId);
 
     if (updateError) {
@@ -100,7 +100,7 @@ export default function TopicFiles({ topicId }) {
     try {
       // Fayl yo‘lini URL dan chiqarib olish
       const fileUrl = new URL(note.url);
-      const filePath = decodeURIComponent(`notes/${topicId}/${name}`);
+      const filePath = decodeURIComponent(`ppts/${topicId}/${name}`);
       console.log(filePath);
 
       const decodedUrl = decodeURIComponent(fileUrl); // URL ni dekodlash
@@ -109,8 +109,8 @@ export default function TopicFiles({ topicId }) {
 
       // Faylni Supabase storage dan o‘chirish
       const { error: deleteError } = await supabase.storage
-        .from("notes")
-        .remove([`notes/${topicId}/${fileName}`]);
+        .from("ppts")
+        .remove([`ppts/${topicId}/${fileName}`]);
 
       if (deleteError) {
         console.error("Fayl o‘chirishda xatolik:", deleteError);
@@ -124,7 +124,7 @@ export default function TopicFiles({ topicId }) {
 
       const { error: updateError } = await supabase
         .from("topics")
-        .update({ notes: updatedNotes }) // JSON.stringify kerak emas
+        .update({ ppts: updatedNotes }) // JSON.stringify kerak emas
         .eq("topic_id", topicId);
 
       if (updateError) {
@@ -141,8 +141,8 @@ export default function TopicFiles({ topicId }) {
 
   return (
     <div className="w-full">
-      <Button className="rounded-xl" onClick={() => setIsOpen(true)}>
-        Fayl qo‘shish <CircleFadingPlus size={28} />
+      <Button className="rounded-xl" variant="ppt" onClick={() => setIsOpen(true)}>
+        PPT qo‘shish <CircleFadingPlus size={28} />
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
@@ -161,11 +161,11 @@ export default function TopicFiles({ topicId }) {
             <Label>Fileni tanlang</Label>
             <Input
               type="file"
-              accept="application/pdf"
+              accept=".ppt,.pptx"
               onChange={(e) => setFile(e.target.files[0])}
             />
           </div>
-          <Button onClick={handleFileUpload} disabled={loading}>{`${
+          <Button  onClick={handleFileUpload} disabled={loading}>{`${
             loading ? "Yuklanmoqda...." : "Yuklash"
           }`}</Button>
         </DialogContent>
@@ -180,7 +180,7 @@ export default function TopicFiles({ topicId }) {
               <div className="w-[30px] h-[40px] relative">
                 <Image
                   fill
-                  src={"/pdf.png"}
+                  src={"/ppt.png"}
                   className="object-contain"
                   alt=""
                 />

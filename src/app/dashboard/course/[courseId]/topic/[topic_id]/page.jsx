@@ -24,6 +24,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 
 import TopicFiles from "@/components/TopicFiles";
+import UploadPPT from "@/components/UploadPPT";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
@@ -250,11 +251,15 @@ const TopicPage = () => {
             <strong>Mavzu tafsifi</strong>
             <p>{topic.description}</p>
           </div>
-          <div className="bg-muted p-3 border">
-            <div>
-              <div className="flex items-center gap-2">
+          <div className="bg-muted p-3 border ">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-start gap-2">
                 {/* Fayl yuklash inputi */}
                 <TopicFiles topicId={topic_id} />
+              </div>
+              <div className="flex items-center gap-2">
+                {/* Fayl yuklash inputi */}
+                <UploadPPT topicId={topic_id} />
               </div>
             </div>
           </div>

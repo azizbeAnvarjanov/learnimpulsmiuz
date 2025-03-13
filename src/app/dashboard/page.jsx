@@ -22,6 +22,7 @@ import {
 import { toast } from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import DashboardNavbar from "./DashboardNavbar";
+import { CircleFadingPlus } from "lucide-react";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -45,19 +46,34 @@ const Dashboard = () => {
   const [courses, setCourses] = useState([]);
   const [open, setOpen] = useState(false);
   const [kurs, setKurs] = useState("1-kurs");
+  const [search, setSearch] = useState("");
 
-  const fetchCourses = async () => {
+  const Refresh = async () => {
     if (!user) return; // Agar foydalanuvchi fio bo‘lmasa, hech narsa qilinmaydi
     setLoading(true);
     const { data, error } = await supabase
       .from("courses")
       .select("*")
-      .eq("teacher", user.login); // faqat author = fio bo'lgan kurslarni olamiz
+      .ilike("name", `%${search}%`);
 
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);
     } else {
       setLoading(false);
+      setCourses(data);
+    }
+  };
+
+  const fetchCourses = async () => {
+    if (!user) return; // Agar foydalanuvchi fio bo‘lmasa, hech narsa qilinmaydi
+    const { data, error } = await supabase
+      .from("courses")
+      .select("*")
+      .ilike("name", `%${search}%`);
+
+    if (error) {
+      console.error("Kurslarni yuklashda xatolik:", error);
+    } else {
       setCourses(data);
     }
   };
@@ -77,7 +93,7 @@ const Dashboard = () => {
     return () => {
       supabase.removeChannel(channel); // Component unmount bo‘lganda obunani to‘xtatish
     };
-  }, [user]); // Foydalanuvchi ismi-familiyasi o‘zgarsa qayta ishlaydi
+  }, [user, search]); // Foydalanuvchi ismi-familiyasi o‘zgarsa qayta ishlaydi
 
   const handleFileChange = (event) => {
     setBanner(event.target.files[0]);
@@ -177,64 +193,82 @@ const Dashboard = () => {
       <DashboardNavbar />
 
       <div className="p-10">
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button>Yangi fan yaratish</Button>
-          </DialogTrigger>
-          <DialogTitle></DialogTitle>
-          <DialogContent>
-            <Input
-              type="text"
-              placeholder="Course Name"
-              value={courseName}
-              onChange={(e) => setCourseName(e.target.value)}
-            />
-            <Select defaultValue={kurs} onValueChange={setKurs}>
-              <SelectTrigger>
-                <SelectValue placeholder={kurs} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1-kurs">1 Kurs</SelectItem>
-                <SelectItem value="2-kurs">2 Kurs</SelectItem>
-                <SelectItem value="3-kurs">3 Kurs</SelectItem>
-                <SelectItem value="4-kurs">4 Kurs</SelectItem>
-                <SelectItem value="5-kurs">5 Kurs</SelectItem>
-                <SelectItem value="6-kurs">6 Kurs</SelectItem>
-              </SelectContent>
-            </Select>
+        <div className="flex items-start gap-1">
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button className="rounded-xl">
+                Yangi fan yaratish <CircleFadingPlus />
+              </Button>
+            </DialogTrigger>
+            <DialogTitle></DialogTitle>
+            <DialogContent>
+              <Input
+                type="text"
+                placeholder="Course Name"
+                value={courseName}
+                onChange={(e) => setCourseName(e.target.value)}
+              />
+              <Select defaultValue={kurs} onValueChange={setKurs}>
+                <SelectTrigger>
+                  <SelectValue placeholder={kurs} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1-kurs">1 Kurs</SelectItem>
+                  <SelectItem value="2-kurs">2 Kurs</SelectItem>
+                  <SelectItem value="3-kurs">3 Kurs</SelectItem>
+                  <SelectItem value="4-kurs">4 Kurs</SelectItem>
+                  <SelectItem value="5-kurs">5 Kurs</SelectItem>
+                  <SelectItem value="6-kurs">6 Kurs</SelectItem>
+                </SelectContent>
+              </Select>
 
-            <Input
-              type="file"
-              accept="image/png, image/jpeg"
-              onChange={handleFileChange}
-            />
-            <Button onClick={handleAddCourse} disabled={loading}>
-              {loading ? "Yaratilmoqda..." : "Yaratish"}
-            </Button>
-          </DialogContent>
-        </Dialog>
-
+              <Input
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={handleFileChange}
+              />
+              <Button onClick={handleAddCourse} disabled={loading}>
+                {loading ? "Yaratilmoqda..." : "Yaratish"}
+              </Button>
+            </DialogContent>
+          </Dialog>
+          <Input
+            type="text"
+            placeholder="Kurs nomi bo‘yicha qidirish..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="mb-4 w-[500px]"
+          />
+        </div>
         <div className="w-full">
           <div className="grid grid-cols-5 gap-5">
-            {courses.map((course) => (
-              <Link
-                href={`/dashboard/course/${course.course_id}`}
-                key={course.id}
-                className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
-              >
-                <img
-                  src={course.banner_url}
-                  alt={course.name}
-                  className="w-full h-[200px] object-cover rounded-t-md"
-                />
-                <div className="p-4">
-                  <p className="font-bold text-xl">{course.name}</p>
-                  <p>
-                    <strong>Kurs:</strong> {course.kurs}
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {courses.length > 0 ? (
+              <>
+                {courses.map((course) => (
+                  <Link
+                    href={`/dashboard/course/${course.course_id}`}
+                    key={course.id}
+                    className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
+                  >
+                    <img
+                      src={course.banner_url}
+                      alt={course.name}
+                      className="w-full h-[200px] object-cover rounded-t-md"
+                    />
+                    <div className="p-4">
+                      <p className="font-bold text-xl">{course.name}</p>
+                      <p>
+                        <strong>Kurs:</strong> {course.kurs}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </>
+            ) : (
+              <>
+                <p className="text-gray-500">Kurslar topilmadi</p>
+              </>
+            )}
           </div>
         </div>
       </div>
