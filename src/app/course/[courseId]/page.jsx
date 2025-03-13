@@ -13,6 +13,7 @@ import {
   RefreshCcw,
   SquareArrowOutUpRight,
   Video,
+  X,
 } from "lucide-react";
 import ReactPlayer from "react-player";
 import { toast } from "react-hot-toast";
@@ -24,6 +25,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Image from "next/image";
 
 export default function CoursePage() {
   const params = useParams();
@@ -32,9 +34,11 @@ export default function CoursePage() {
   const [course, setCourse] = useState(null);
   const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState(null);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [test, setTest] = useState(null);
+  const [layout, setLayout] = useState("video");
 
   useEffect(() => {
     if (course_id) {
@@ -65,6 +69,7 @@ export default function CoursePage() {
     if (!error && data.length > 0) {
       setTopics(data);
       setSelectedTopic(data[0]);
+      setPdfUrl(data[0].notes[0]);
       fetchFiles(data[0].topic_id);
       fetchTest(data[0].topic_id);
     }
@@ -96,9 +101,6 @@ export default function CoursePage() {
     fetchFiles(topic.topic_id);
     fetchTest(topic.topic_id);
   };
-
-
-
 
   if (loading)
     return (
@@ -136,6 +138,8 @@ export default function CoursePage() {
       </div>
     );
 
+  console.log(selectedTopic?.notes[0].url);
+
   return (
     <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
       <div className="player-thumb w-full md:w-[75%] overflow-y-scroll scrollbar-hide max-h-screen">
@@ -152,17 +156,38 @@ export default function CoursePage() {
             selectedTopic={selectedTopic}
             handleTopicClick={handleTopicClick}
             test={test}
+            setLayout={setLayout}
           />
         </div>
 
         <div className="w-full h-[300px] md:h-[700px] overflow-hidden">
-          {selectedTopic?.video_link && (
-            <ReactPlayer
-              url={selectedTopic.video_link}
-              controls
-              width="100%"
-              height="100%"
-            />
+          {layout === "video" ? (
+            <>
+              {selectedTopic?.video_link && (
+                <ReactPlayer
+                  url={selectedTopic.video_link}
+                  controls
+                  width="100%"
+                  height="100%"
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {" "}
+              <div className="min-h-screen w-full fixed top-0 left-0 z-10">
+                <Button
+                  className="bg-red-600 absolute right-5 top-5 md:right-10 md:top-10 hover:opacity-100"
+                  onClick={() => setLayout("video")}
+                >
+                  <X />
+                </Button>
+                <iframe
+                  src={selectedTopic?.notes[0].url}
+                  className="w-full h-screen"
+                />
+              </div>
+            </>
           )}
         </div>
 
@@ -203,18 +228,32 @@ export default function CoursePage() {
                       : "bg-white"
                   }`}
                 >
-                  <Video /> <h1 className="font-bold">{topic.name}</h1>
+                  <div className="w-[25px] h-[25px] relative">
+                    <Image
+                      fill
+                      src={"/videopl.png"}
+                      alt=""
+                      className="object-contain"
+                    />
+                  </div>
+                  <h1 className="font-bold">{topic.name}</h1>
                 </div>
                 {selectedTopic?.notes.map((file, idx) => (
-                  <Link
-                    target="_blank"
+                  <div
+                    onClick={() => setLayout("file")}
                     className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
-                    href={`${file.url}`}
                     key={idx}
                   >
-                    <Paperclip />
+                    <div className="w-[20px] h-[20px] relative">
+                      <Image
+                        fill
+                        src={"/pdf.png"}
+                        alt=""
+                        className="object-contain"
+                      />
+                    </div>
                     <h1 className="font-bold">{file.name}</h1>
-                  </Link>
+                  </div>
                 ))}
                 {test !== null && (
                   <Link

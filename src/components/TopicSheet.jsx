@@ -19,11 +19,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
+import Image from "next/image";
 export default function TopicsSheet({
   course_id,
   selectedTopic,
   handleTopicClick,
   test,
+  setLayout
 }) {
   const [topics, setTopics] = useState([]);
   const [open, setOpen] = useState(false);
@@ -76,23 +78,33 @@ export default function TopicsSheet({
                         : "bg-white"
                     }`}
                   >
-                    <div className="w-[10%] h-[40px] grid place-items-center">
-                      <Video />
-                    </div>{" "}
+                    <div className="w-[25px] h-[25px] relative">
+                    <Image
+                      fill
+                      src={"/videopl.png"}
+                      alt=""
+                      className="object-contain"
+                    />
+                  </div>
                     <h1 className="font-bold w-[90%]">{topic.name}</h1>
                   </div>
                   {selectedTopic?.notes.map((file, idx) => (
-                    <Link
-                      target="_blank"
-                      className="flex items-center gap-2 border p-3 rounded-lg bg-white"
-                      href={`${file.url}`}
-                      key={idx}
-                      onClick={() => setOpen(false)}
-                    >
-                      <Paperclip />
-                      <h1 className="font-bold">{file.name}</h1>
-                    </Link>
-                  ))}
+                  <div
+                    onClick={() => {setLayout("file"),setOpen(false)}}
+                    className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
+                    key={idx}
+                  >
+                    <div className="w-[20px] h-[20px] relative">
+                      <Image
+                        fill
+                        src={"/pdf.png"}
+                        alt=""
+                        className="object-contain"
+                      />
+                    </div>
+                    <h1 className="font-bold">{file.name}</h1>
+                  </div>
+                ))}
                   {test !== null && (
                     <Link
                       href={`/test/${test.id}`}

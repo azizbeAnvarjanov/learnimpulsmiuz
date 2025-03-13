@@ -192,7 +192,7 @@ const Dashboard = () => {
     <div>
       <DashboardNavbar />
 
-      <div className="p-10">
+      <div className="p-5 min-h-screen">
         <div className="flex items-start gap-1">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -234,30 +234,30 @@ const Dashboard = () => {
           </Dialog>
           <Input
             type="text"
-            placeholder="Kurs nomi bo‘yicha qidirish..."
+            placeholder="Qidirish..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="mb-4 w-[500px]"
+            className="mb-4 w-[300px]"
           />
         </div>
         <div className="w-full">
-          <div className="grid grid-cols-5 gap-5">
+          <div className="grid grid-cols-5 gap-2">
             {courses.length > 0 ? (
               <>
                 {courses.map((course) => (
                   <Link
                     href={`/dashboard/course/${course.course_id}`}
                     key={course.id}
-                    className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
+                    className="border gap-3 shadow-xl rounded-lg hover:bg-muted"
                   >
                     <img
                       src={course.banner_url}
                       alt={course.name}
-                      className="w-full h-[200px] object-cover rounded-t-md"
+                      className="w-full object-contain h-[200px] rounded-t-md border-b"
                     />
-                    <div className="p-4">
-                      <p className="font-bold text-xl">{course.name}</p>
-                      <p>
+                    <div className="p-3">
+                      <p className="font-bold text-sm">{course.name}</p>
+                      <p className="text-sm">
                         <strong>Kurs:</strong> {course.kurs}
                       </p>
                     </div>

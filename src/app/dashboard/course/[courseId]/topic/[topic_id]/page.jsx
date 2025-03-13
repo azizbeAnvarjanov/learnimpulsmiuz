@@ -257,7 +257,7 @@ const TopicPage = () => {
                 {/* Fayl yuklash inputi */}
                 <TopicFiles topicId={topic_id} />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2">
                 {/* Fayl yuklash inputi */}
                 <UploadPPT topicId={topic_id} />
               </div>
