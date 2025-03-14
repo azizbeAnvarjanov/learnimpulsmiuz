@@ -158,6 +158,8 @@ export default function CoursePage() {
             handleTopicClick={handleTopicClick}
             test={test}
             pdfUrl={setLayout}
+            setPdfUrl={setPdfUrl}
+            setLayout={setLayout}
           />
         </div>
 

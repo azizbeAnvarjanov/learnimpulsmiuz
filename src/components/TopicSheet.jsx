@@ -25,7 +25,9 @@ export default function TopicsSheet({
   selectedTopic,
   handleTopicClick,
   test,
-  pdfUrl
+  pdfUrl,
+  setPdfUrl,
+  setLayout,
 }) {
   const [topics, setTopics] = useState([]);
   const [open, setOpen] = useState(false);
@@ -79,32 +81,53 @@ export default function TopicsSheet({
                     }`}
                   >
                     <div className="w-[25px] h-[25px] relative">
-                    <Image
-                      fill
-                      src={"/videopl.png"}
-                      alt=""
-                      className="object-contain"
-                    />
-                  </div>
-                    <h1 className="font-bold w-[90%]">{topic.name}</h1>
-                  </div>
-                  {selectedTopic?.notes.map((file, idx) => (
-                  <div
-                  onClick={() => window.open(pdfUrl, "_blank")}
-                    className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
-                    key={idx}
-                  >
-                    <div className="w-[20px] h-[20px] relative">
                       <Image
                         fill
-                        src={"/pdf.png"}
+                        src={"/videopl.png"}
                         alt=""
                         className="object-contain"
                       />
                     </div>
-                    <h1 className="font-bold">{file.name}</h1>
+                    <h1 className="font-bold w-[90%]">{topic.name}</h1>
                   </div>
-                ))}
+                  {selectedTopic?.notes.map((file, idx) => (
+                    <div
+                      onClick={() => {
+                        setLayout("file"), setPdfUrl(file.url), setOpen(false);
+                      }}
+                      className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
+                      key={idx}
+                    >
+                      <div className="w-[20px] h-[20px] relative">
+                        <Image
+                          fill
+                          src={"/pdf.png"}
+                          alt=""
+                          className="object-contain"
+                        />
+                      </div>
+                      <h1 className="font-bold">{file.name}</h1>
+                    </div>
+                  ))}
+                  {selectedTopic?.ppts.map((file, idx) => (
+                    <div
+                      onClick={() => {
+                        setLayout("pptx"), setPdfUrl(file.url), setOpen(false);
+                      }}
+                      className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
+                      key={idx}
+                    >
+                      <div className="w-[20px] h-[20px] relative">
+                        <Image
+                          fill
+                          src={"/ppt.png"}
+                          alt=""
+                          className="object-contain"
+                        />
+                      </div>
+                      <h1 className="font-bold">{file.name}</h1>
+                    </div>
+                  ))}
                   {test !== null && (
                     <Link
                       href={`/test/${test.id}`}
