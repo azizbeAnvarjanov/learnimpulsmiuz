@@ -25,7 +25,7 @@ export default function TopicsSheet({
   selectedTopic,
   handleTopicClick,
   test,
-  setLayout
+  pdfUrl
 }) {
   const [topics, setTopics] = useState([]);
   const [open, setOpen] = useState(false);
@@ -90,7 +90,7 @@ export default function TopicsSheet({
                   </div>
                   {selectedTopic?.notes.map((file, idx) => (
                   <div
-                    onClick={() => {setLayout("file"),setOpen(false)}}
+                  onClick={() => window.open(pdfUrl, "_blank")}
                     className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                     key={idx}
                   >

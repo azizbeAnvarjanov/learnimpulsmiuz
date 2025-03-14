@@ -5,6 +5,7 @@ import "../../globals.css";
 import { useParams } from "next/navigation";
 import { supabase } from "@/app/supabaseClient";
 import Link from "next/link";
+import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Button } from "@/components/ui/button";
 import {
   BookOpenCheck,
@@ -34,7 +35,7 @@ export default function CoursePage() {
   const [course, setCourse] = useState(null);
   const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const [pdfUrl, setPdfUrl] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState(selectedTopic?.notes[0]?.url);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [test, setTest] = useState(null);
@@ -102,6 +103,8 @@ export default function CoursePage() {
     fetchTest(topic.topic_id);
   };
 
+  console.log(selectedTopic);
+
   if (loading)
     return (
       <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
@@ -138,7 +141,6 @@ export default function CoursePage() {
       </div>
     );
 
-
   return (
     <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
       <div className="player-thumb w-full md:w-[75%] overflow-y-scroll scrollbar-hide max-h-screen">
@@ -149,13 +151,13 @@ export default function CoursePage() {
           >
             <ChevronLeft />
           </Link>
-          <h1 className="font-bold text-[15px] md:text-2xl">{course.name}</h1>
+          <h1 className="font-bold text-[15px] md:text-2xl">{course?.name}</h1>
           <TopicsSheet
             course_id={course_id}
             selectedTopic={selectedTopic}
             handleTopicClick={handleTopicClick}
             test={test}
-            setLayout={setLayout}
+            pdfUrl={setLayout}
           />
         </div>
 
@@ -171,9 +173,8 @@ export default function CoursePage() {
                 />
               )}
             </>
-          ) : (
+          ) : layout === "file" ? (
             <>
-              {" "}
               <div className="min-h-screen w-full fixed top-0 left-0 z-10">
                 <Button
                   className="bg-red-600 absolute right-5 top-5 md:right-10 md:top-10 hover:opacity-100"
@@ -182,12 +183,31 @@ export default function CoursePage() {
                   <X />
                 </Button>
                 <iframe
-                  src={selectedTopic?.notes[0]?.url}
+                  src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+                    pdfUrl
+                  )}`}
                   className="w-full h-screen"
                 />
               </div>
             </>
-          )}
+          ) : layout === "pptx" ? (
+            <>
+              <div className="min-h-screen w-full fixed top-0 left-0 z-10">
+                <Button
+                  className="bg-red-600 absolute right-5 top-5 md:right-10 md:top-10 hover:opacity-100"
+                  onClick={() => setLayout("video")}
+                >
+                  <X />
+                </Button>
+                <iframe
+                  src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+                    pdfUrl
+                  )}`}
+                  className="w-full h-screen"
+                />
+              </div>
+            </>
+          ) : null}
         </div>
 
         <div className="p-3">
@@ -239,7 +259,9 @@ export default function CoursePage() {
                 </div>
                 {selectedTopic?.notes.map((file, idx) => (
                   <div
-                    onClick={() => setLayout("file")}
+                    onClick={() => {
+                      setLayout("file"), setPdfUrl(file.url);
+                    }}
                     className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                     key={idx}
                   >
@@ -247,6 +269,25 @@ export default function CoursePage() {
                       <Image
                         fill
                         src={"/pdf.png"}
+                        alt=""
+                        className="object-contain"
+                      />
+                    </div>
+                    <h1 className="font-bold">{file.name}</h1>
+                  </div>
+                ))}
+                {selectedTopic?.ppts.map((file, idx) => (
+                  <div
+                    onClick={() => {
+                      setLayout("pptx"), setPdfUrl(file.url);
+                    }}
+                    className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
+                    key={idx}
+                  >
+                    <div className="w-[20px] h-[20px] relative">
+                      <Image
+                        fill
+                        src={"/ppt.png"}
                         alt=""
                         className="object-contain"
                       />
