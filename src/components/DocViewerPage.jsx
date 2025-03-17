@@ -52,7 +52,7 @@ const DocViewerPage = ({ docsarr }) => {
               },
               csvDelimiter: ",", // "," as default,
               pdfZoom: {
-                defaultZoom: 1.3, // 1 as default,
+                defaultZoom: 1.1, // 1 as default,
                 zoomJump: 0.2, // 0.1 as default,
               },
               pdfVerticalScrollByDefault: true, // false as default
