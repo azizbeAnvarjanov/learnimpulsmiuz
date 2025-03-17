@@ -5,8 +5,8 @@ import "../../globals.css";
 import { useParams } from "next/navigation";
 import { supabase } from "@/app/supabaseClient";
 import Link from "next/link";
-import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Button } from "@/components/ui/button";
+import DocViewerPage from "@/components/DocViewerPage";
 import {
   BookOpenCheck,
   ChevronLeft,
@@ -35,7 +35,6 @@ export default function CoursePage() {
   const [course, setCourse] = useState(null);
   const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const [pdfUrl, setPdfUrl] = useState(selectedTopic?.notes[0]?.url);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [test, setTest] = useState(null);
@@ -70,7 +69,6 @@ export default function CoursePage() {
     if (!error && data.length > 0) {
       setTopics(data);
       setSelectedTopic(data[0]);
-      setPdfUrl(data[0].notes[0]);
       fetchFiles(data[0].topic_id);
       fetchTest(data[0].topic_id);
     }
@@ -103,7 +101,8 @@ export default function CoursePage() {
     fetchTest(topic.topic_id);
   };
 
-  console.log(selectedTopic);
+  const docs = selectedTopic?.notes;
+  console.log(docs);
 
   if (loading)
     return (
@@ -158,58 +157,19 @@ export default function CoursePage() {
             handleTopicClick={handleTopicClick}
             test={test}
             pdfUrl={setLayout}
-            setPdfUrl={setPdfUrl}
             setLayout={setLayout}
           />
         </div>
 
         <div className="w-full h-[300px] md:h-[700px] overflow-hidden">
-          {layout === "video" ? (
-            <>
-              {selectedTopic?.video_link && (
-                <ReactPlayer
-                  url={selectedTopic.video_link}
-                  controls
-                  width="100%"
-                  height="100%"
-                />
-              )}
-            </>
-          ) : layout === "file" ? (
-            <>
-              <div className="min-h-screen w-full fixed top-0 left-0 z-10">
-                <Button
-                  className="bg-red-600 absolute right-5 top-5 md:right-10 md:top-10 hover:opacity-100"
-                  onClick={() => setLayout("video")}
-                >
-                  <X />
-                </Button>
-                <iframe
-                  src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
-                    pdfUrl
-                  )}`}
-                  className="w-full h-screen"
-                />
-              </div>
-            </>
-          ) : layout === "pptx" ? (
-            <>
-              <div className="min-h-screen w-full fixed top-0 left-0 z-10">
-                <Button
-                  className="bg-red-600 absolute right-5 top-5 md:right-10 md:top-10 hover:opacity-100"
-                  onClick={() => setLayout("video")}
-                >
-                  <X />
-                </Button>
-                <iframe
-                  src={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
-                    pdfUrl
-                  )}`}
-                  className="w-full h-screen"
-                />
-              </div>
-            </>
-          ) : null}
+          {selectedTopic?.video_link && (
+            <ReactPlayer
+              url={selectedTopic.video_link}
+              controls
+              width="100%"
+              height="100%"
+            />
+          )}
         </div>
 
         <div className="p-3">
@@ -218,6 +178,7 @@ export default function CoursePage() {
             {selectedTopic?.description}{" "}
           </div>
         </div>
+        <DocViewerPage docsarr={selectedTopic?.notes} />
       </div>
       <div className="w-full hidden md:block md:w-[25%] h-[100vh] border-l player-thumb overflow-y-scroll">
         <div className="flex items-center gap-1 p-3 justify-between">
@@ -262,7 +223,7 @@ export default function CoursePage() {
                 {selectedTopic?.notes.map((file, idx) => (
                   <div
                     onClick={() => {
-                      setLayout("file"), setPdfUrl(file.url);
+                      setLayout("file");
                     }}
                     className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                     key={idx}
@@ -281,7 +242,7 @@ export default function CoursePage() {
                 {selectedTopic?.ppts.map((file, idx) => (
                   <div
                     onClick={() => {
-                      setLayout("pptx"), setPdfUrl(file.url);
+                      setLayout("pptx");
                     }}
                     className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                     key={idx}
