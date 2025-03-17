@@ -222,9 +222,6 @@ export default function CoursePage() {
                 </div>
                 {selectedTopic?.notes.map((file, idx) => (
                   <div
-                    onClick={() => {
-                      setLayout("file");
-                    }}
                     className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                     key={idx}
                   >
@@ -241,9 +238,6 @@ export default function CoursePage() {
                 ))}
                 {selectedTopic?.ppts.map((file, idx) => (
                   <div
-                    onClick={() => {
-                      setLayout("pptx");
-                    }}
                     className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                     key={idx}
                   >

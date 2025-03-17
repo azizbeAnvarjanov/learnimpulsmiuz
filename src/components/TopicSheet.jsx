@@ -93,7 +93,7 @@ export default function TopicsSheet({
                   {selectedTopic?.notes.map((file, idx) => (
                     <div
                       onClick={() => {
-                        setLayout("file"), setPdfUrl(file.url), setOpen(false);
+                        setOpen(false);
                       }}
                       className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                       key={idx}
@@ -112,7 +112,7 @@ export default function TopicsSheet({
                   {selectedTopic?.ppts.map((file, idx) => (
                     <div
                       onClick={() => {
-                        setLayout("pptx"), setPdfUrl(file.url), setOpen(false);
+                        setOpen(false);
                       }}
                       className="flex items-center gap-2 border p-3 rounded-lg bg-white hover:bg-muted"
                       key={idx}
