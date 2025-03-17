@@ -22,6 +22,7 @@ import { toast } from "react-hot-toast";
 import { supabase } from "../../supabaseClient";
 import { Skeleton } from "@/components/ui/skeleton";
 import DashboardNavbar from "../DashboardNavbar";
+import CourseEditors from "@/components/CourseEditors";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -184,7 +185,9 @@ const Dashboard = () => {
                   <p>
                     <strong>Kurs:</strong> {course.kurs}
                   </p>
+                  <p></p>
                 </div>
+                
               </Link>
             ))}
           </div>

@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import Cookies from "js-cookie";
 
 const TopicPage = () => {
   const params = useParams();
@@ -49,8 +50,14 @@ const TopicPage = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correct, setCorrect] = useState(1);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const userData = Cookies.get("user");
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+    }
     if (topic_id) {
       fetchTopic();
       fetchTests();
