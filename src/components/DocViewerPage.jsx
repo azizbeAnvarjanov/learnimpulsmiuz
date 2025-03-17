@@ -1,8 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
@@ -41,11 +39,25 @@ const DocViewerPage = ({ docsarr }) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 p-4">
-      <h1 className="text-xl font-bold mb-4">Document Viewer</h1>
+    <div className="flex flex-col items-center justify-center bg-gray-100 overflow-hidden">
       {docs.length > 0 ? (
         <div className="w-full h-fit border p-4 bg-white rounded shadow-md">
-          <DocViewer documents={docs} />
+          <DocViewer
+            documents={docs}
+            config={{
+              header: {
+                disableHeader: false,
+                disableFileName: false,
+                retainURLParams: false,
+              },
+              csvDelimiter: ",", // "," as default,
+              pdfZoom: {
+                defaultZoom: 1.3, // 1 as default,
+                zoomJump: 0.2, // 0.1 as default,
+              },
+              pdfVerticalScrollByDefault: true, // false as default
+            }}
+          />
         </div>
       ) : (
         <p className="text-gray-500">No documents available</p>
