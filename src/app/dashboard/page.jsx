@@ -133,6 +133,7 @@ const Dashboard = () => {
         banner_url: bannerUrl,
         teacher: user.login,
         kurs: kurs,
+        editors: [{ id: user.id, name: user.fio }],
       },
     ]);
 
