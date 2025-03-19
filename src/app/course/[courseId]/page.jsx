@@ -173,6 +173,9 @@ export default function CoursePage() {
         </div>
 
         <div className="p-3">
+          <h1 className="pl-3 pb-2 md:text-2xl">
+            Mavzu: <strong>{selectedTopic?.name}</strong>
+          </h1>
           <div className="border bg-muted p-5 rounded-lg">
             <h1 className="font-bold">Mavzu tafsivi</h1>
             {selectedTopic?.description}{" "}
