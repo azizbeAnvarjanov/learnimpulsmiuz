@@ -54,13 +54,13 @@ export default function LoginPage() {
       <div className="flex items-center w-full justify-center min-h-screen bg-[#eeeeee]">
         <div className="flex flex-col-reverse md:flex-row w-[800px] md:shadow-lg rounded-2xl overflow-hidden">
           {/* Left Section - Login Form */}
-          <div className="w-[90%] lg:w-1/2 rounded-xl mx-auto bg-white p-8 flex flex-col justify-center">
+          <div className="w-[90%] lg:w-1/2 rounded-xl md:rounded-none mx-auto bg-white p-8 flex flex-col justify-center">
             <h2 className="text-2xl font-bold text-center">Kirish</h2>
             <p className="text-sm text-gray-500 text-center">
               Talaba sifatida tizimga kirish!
             </p>
 
-            <div className="bg-white mt-3 rounded-lg">
+            <div className="bg-white mt-3 rounded-lg ">
               {error && <p className="text-red-500">{error}</p>}
               <Input
                 type="text"
