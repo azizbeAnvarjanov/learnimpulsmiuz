@@ -30,7 +30,7 @@ export default function EmployeesLogin() {
     Cookies.set("employee", JSON.stringify(data), { expires: 1 });
 
     // Dashboard sahifasiga yo‘naltiramiz
-    router.push("/");
+    router.push("/dashboard");
   };
 
   return (
