@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
 import { AlignJustify, LogOut } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Sheet,
@@ -12,8 +12,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import Cookies from "js-cookie";
 
 const StudentNavbar = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const logOutF = () => {
     Cookies.remove("user"); // Cookie o‘chirish
@@ -45,7 +47,7 @@ const StudentNavbar = () => {
           Ariza topshirish
         </Link>
       </div>
-      <Sheet>
+      <Sheet className="relative">
         <SheetTrigger className="grid md:hidden ">
           <AlignJustify />
         </SheetTrigger>
@@ -69,6 +71,13 @@ const StudentNavbar = () => {
               >
                 Ariza topshirish
               </Link>
+              <Button
+                onClick={logOutF}
+                className="flex w-[96%] absolute bottom-2 left-[50%] -translate-x-[50%]"
+                variant="destructive"
+              >
+                <LogOut />
+              </Button>
             </SheetDescription>
           </SheetHeader>
         </SheetContent>
