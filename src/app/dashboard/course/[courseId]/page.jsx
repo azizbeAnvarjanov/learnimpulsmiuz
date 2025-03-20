@@ -162,6 +162,7 @@ export default function CoursePage() {
         name: topicName,
         description,
         video_link: videoLink,
+        order: topicOrder,
       })
       .eq("topic_id", editingTopic);
     if (error) {
@@ -173,6 +174,8 @@ export default function CoursePage() {
     setDescription("");
     setVideoLink("");
     setEdit_Open(false);
+    toast.success("Mavzu muvaqiyatli tahrirlandi !");
+    fetchTopics();
   };
 
   // 🔹 Kurs bannerini yangilash funksiyasi
@@ -240,8 +243,6 @@ export default function CoursePage() {
   const isEdit = isEditor.some((editor) => editor.id === user?.id);
 
   const sortingTopics = topics.sort((a, b) => a.order - b.order); // order bo‘yicha saralash
-
-  console.log(user?.id);
 
   if (!course)
     return (
@@ -398,7 +399,7 @@ export default function CoursePage() {
           <Dialog open={edit_open} onOpenChange={setEdit_Open}>
             <DialogTrigger asChild>
               <Button
-                className="hidden w-[45px] h-[45px] rounded-xl"
+                className="hidden w-[450px] h-[45px] rounded-xl"
                 variant="outline"
               >
                 <CircleFadingPlus />
@@ -406,7 +407,7 @@ export default function CoursePage() {
             </DialogTrigger>
             <DialogTitle className="hidden"></DialogTitle>
             <DialogContent>
-              <h1 className="font-bold">Ma'lumotlarni tahrirlash</h1>
+              <h1 className="font-bold">Ma'lumotlarni tahrirlash 2</h1>
               <div>
                 <Label>Mavzu tarib raqami</Label>
                 <Input
