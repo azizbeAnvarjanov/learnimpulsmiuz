@@ -7,6 +7,7 @@ import { supabase } from "@/app/supabaseClient";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DocViewerPage from "@/components/DocViewerPage";
+import PptViewer from "../../../components/PptViewer";
 import {
   BookOpenCheck,
   ChevronLeft,
@@ -160,7 +161,6 @@ export default function CoursePage() {
             setLayout={setLayout}
           />
         </div>
-
         <div className="w-full h-[300px] md:h-[700px] overflow-hidden">
           {selectedTopic?.video_link && (
             <ReactPlayer
@@ -171,7 +171,6 @@ export default function CoursePage() {
             />
           )}
         </div>
-
         <div className="p-3">
           <h1 className="pl-3 pb-2 md:text-2xl">
             Mavzu: <strong>{selectedTopic?.name}</strong>
@@ -181,7 +180,9 @@ export default function CoursePage() {
             {selectedTopic?.description}{" "}
           </div>
         </div>
-        <DocViewerPage docsarr={selectedTopic?.notes} />
+        {/* <DocViewerPage docsarr={selectedTopic?.notes} /> */}
+        <PptViewer fileUrl="https://uetyhxypnwjyronmbmcx.supabase.co/storage/v1/object/public/ppts/ppts/121859160/Patho-1.pptx" />
+        
       </div>
       <div className="w-full hidden md:block md:w-[25%] h-[100vh] border-l player-thumb overflow-y-scroll">
         <div className="flex items-center gap-1 p-3 justify-between">
@@ -237,7 +238,9 @@ export default function CoursePage() {
                       />
                     </div>
                     {/* <h1 className="font-bold">{file.name}</h1> <br /><br /> */}
-                    <Link href={file.url} className="font-bold">sdddd</Link>
+                    <Link href={file.url} className="font-bold">
+                      sdddd
+                    </Link>
                   </div>
                 ))}
                 {selectedTopic?.ppts.map((file, idx) => (
