@@ -46,6 +46,12 @@ const StudentNavbar = () => {
         >
           Ariza topshirish
         </Link>
+        <Link
+          className="border py-1 px-5 rounded-md"
+          href={"https://t.me/a_anvarjanov"}
+        >
+          Texnik qo'llab quvatlash
+        </Link>
       </div>
       <Sheet className="relative">
         <SheetTrigger className="grid md:hidden ">
@@ -70,6 +76,12 @@ const StudentNavbar = () => {
                 href={"/applications"}
               >
                 Ariza topshirish
+              </Link>
+              <Link
+                className="flex border py-2 px-5 rounded-md"
+                href={"https://t.me/a_anvarjanov"}
+              >
+                Texnik qo'llab quvatlash
               </Link>
               <Button
                 onClick={logOutF}

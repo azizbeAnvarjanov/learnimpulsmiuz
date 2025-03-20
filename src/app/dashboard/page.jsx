@@ -195,44 +195,47 @@ const Dashboard = () => {
 
       <div className="p-5 min-h-screen">
         <div className="flex items-start gap-1">
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button className="rounded-xl">
-                Yangi fan yaratish <CircleFadingPlus />
-              </Button>
-            </DialogTrigger>
-            <DialogTitle></DialogTitle>
-            <DialogContent>
-              <Input
-                type="text"
-                placeholder="Course Name"
-                value={courseName}
-                onChange={(e) => setCourseName(e.target.value)}
-              />
-              <Select defaultValue={kurs} onValueChange={setKurs}>
-                <SelectTrigger>
-                  <SelectValue placeholder={kurs} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1-kurs">1 Kurs</SelectItem>
-                  <SelectItem value="2-kurs">2 Kurs</SelectItem>
-                  <SelectItem value="3-kurs">3 Kurs</SelectItem>
-                  <SelectItem value="4-kurs">4 Kurs</SelectItem>
-                  <SelectItem value="5-kurs">5 Kurs</SelectItem>
-                  <SelectItem value="6-kurs">6 Kurs</SelectItem>
-                </SelectContent>
-              </Select>
+          {user?.role === "Teacher" && (
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button className="rounded-xl">
+                  Yangi fan yaratish <CircleFadingPlus />
+                </Button>
+              </DialogTrigger>
+              <DialogTitle></DialogTitle>
+              <DialogContent>
+                <Input
+                  type="text"
+                  placeholder="Course Name"
+                  value={courseName}
+                  onChange={(e) => setCourseName(e.target.value)}
+                />
+                <Select defaultValue={kurs} onValueChange={setKurs}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={kurs} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1-kurs">1 Kurs</SelectItem>
+                    <SelectItem value="2-kurs">2 Kurs</SelectItem>
+                    <SelectItem value="3-kurs">3 Kurs</SelectItem>
+                    <SelectItem value="4-kurs">4 Kurs</SelectItem>
+                    <SelectItem value="5-kurs">5 Kurs</SelectItem>
+                    <SelectItem value="6-kurs">6 Kurs</SelectItem>
+                  </SelectContent>
+                </Select>
 
-              <Input
-                type="file"
-                accept="image/png, image/jpeg"
-                onChange={handleFileChange}
-              />
-              <Button onClick={handleAddCourse} disabled={loading}>
-                {loading ? "Yaratilmoqda..." : "Yaratish"}
-              </Button>
-            </DialogContent>
-          </Dialog>
+                <Input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={handleFileChange}
+                />
+                <Button onClick={handleAddCourse} disabled={loading}>
+                  {loading ? "Yaratilmoqda..." : "Yaratish"}
+                </Button>
+              </DialogContent>
+            </Dialog>
+          )}
+
           <Input
             type="text"
             placeholder="Qidirish..."

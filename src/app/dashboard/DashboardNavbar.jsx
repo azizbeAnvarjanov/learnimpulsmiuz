@@ -32,7 +32,7 @@ const Navbar = () => {
           }`}
           href="/dashboard"
         >
-          Dashboard
+          Fan baza
         </Link>
       )}
       {user?.role === "Super Admin" && (
@@ -47,6 +47,18 @@ const Navbar = () => {
           Hamma fanlar
         </Link>
       )}
+      {user?.role === "Employee" && (
+        <Link
+          className={`hover:bg-muted py-2 px-4 border rounded-xl ${
+            pathname === "/dashboard/applications"
+              ? "bg-blue-500 text-white"
+              : ""
+          }`}
+          href="/dashboard/applications"
+        >
+          Arizalar
+        </Link>
+      )}
 
       <Link
         className={`hover:bg-muted py-2 px-4 border rounded-xl ${
@@ -56,6 +68,7 @@ const Navbar = () => {
       >
         Profilim
       </Link>
+
       <Button onClick={logOutF} variant="destructive">
         <LogOut />
       </Button>

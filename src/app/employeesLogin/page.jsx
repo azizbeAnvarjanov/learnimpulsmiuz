@@ -7,6 +7,8 @@ import { supabase } from "../supabaseClient";
 import Cookies from "js-cookie";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { ArrowLeft, ChevronLeft } from "lucide-react";
 
 const EmployeesLoigin = () => {
   const [login, setlogin] = useState("");
@@ -39,7 +41,12 @@ const EmployeesLoigin = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4">Xodim sifatida kirish</h2>
+        <div className="w-[80px] mb-2 h-[80px] mx-auto relative">
+          <Image fill src={"/logo.png"} alt="" className="object-contain" />
+        </div>
+        <h2 className="text-xl text-center font-bold mb-4">
+          Impuls ta'lim platofrmasi
+        </h2>
         {error && <p className="text-red-500">{error}</p>}
         <Input
           type="text"
@@ -61,7 +68,12 @@ const EmployeesLoigin = () => {
         >
           Kirish
         </Button>
-        <Link href="/login" className="mt-3 text-center flex w-full justify-center">Talaba sifatida kirish</Link>
+        <Link
+          href="/login"
+          className="mt-3 text-center flex w-full justify-center"
+        >
+          Talaba sifatida kirish
+        </Link>
       </div>
     </div>
   );

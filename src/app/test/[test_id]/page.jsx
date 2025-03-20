@@ -79,9 +79,9 @@ const TestPlayingPage = () => {
           </h2>
           <div className="space-y-2">
             {["optionA", "optionB", "optionC", "optionD"].map((option) => (
-              <Button
+              <div
                 key={option}
-                className={`w-full text-black border text-left ${
+                className={`w-full py-1 px-2 cursor-pointer text-black border text-left text-wrap ${
                   answers[questions[currentIndex].question_id] ===
                   questions[currentIndex][option]
                     ? "bg-blue-500 text-white"
@@ -95,14 +95,14 @@ const TestPlayingPage = () => {
                 }
               >
                 {questions[currentIndex][option]}
-              </Button>
+              </div>
             ))}
           </div>
           <div className="flex justify-between mt-5">
             <Button onClick={finishTest} className="bg-red-500 text-white">
               Testni tugatish
             </Button>
-            <Button onClick={nextQuestion} className="bg-green-500 text-white">
+            <Button onClick={nextQuestion} className="bg-green-500 text-white ">
               {currentIndex === questions.length - 1 ? "Tugatish" : "Keyingi"}
             </Button>
           </div>
@@ -110,14 +110,19 @@ const TestPlayingPage = () => {
       ) : (
         <div className="text-center">
           <h2 className="text-2xl font-bold">Test natijasi</h2>
-          <p className="text-lg mt-2">
+          <p className="text-sm mt-2">
             Siz <strong>{questions.length}</strong> ta savoldan{" "}
             <strong>{score}</strong> tasiga to‘g‘ri javob berdingiz.
           </p>
           <Button onClick={restartTest} className="mt-4 bg-blue-500 text-white">
             Qayta ishlash
           </Button>
-          <Link href={`/`} className="mt-4 ml-2 py-2 px-4 rounded-sm bg-blue-500 text-white">
+          <br />
+          <br />
+          <Link
+            href={`/`}
+            className="mt-4 ml-2 py-2 px-4 rounded-sm bg-blue-500 text-white"
+          >
             Asosiy sahifaga qaytish
           </Link>
           <div className="grid grid-cols-1 gap-3 mt-5">
@@ -127,14 +132,14 @@ const TestPlayingPage = () => {
               return (
                 <div
                   key={idx}
-                  className={`p-3 border rounded-lg shadow-md flex justify-between text-left ${
+                  className={`p-3 border text-sm rounded-lg shadow-md flex justify-between text-left ${
                     isCorrect ? "bg-green-100" : "bg-red-100"
                   }`}
                 >
                   <div>
                     <h3 className="font-bold">{item.question}</h3>
                     <p className="mt-1">
-                      Sizning javobingiz:{" "}
+                      <br />
                       <strong className="flex">
                         A: {item.optionA || "Tanlanmagan"}
                       </strong>
@@ -148,10 +153,12 @@ const TestPlayingPage = () => {
                         D: {item.optionD || "Tanlanmagan"}
                       </strong>
                     </p>
+                    <br />
                     <p className="mt-1">
                       Sizning javobingiz:{" "}
                       <strong>{userAnswer || "Tanlanmagan"}</strong>
                     </p>
+                    <br />
                     <p>
                       To‘g‘ri javob: <strong>{item.answer}</strong>
                     </p>
