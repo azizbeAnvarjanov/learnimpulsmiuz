@@ -31,14 +31,9 @@ const TopicPage = () => {
   const course_id = params.courseId;
   const [topic, setTopic] = useState(null);
   const [tests, setTests] = useState([]);
-  const [testName, setTestName] = useState("");
-  const [timeLimit, setTimeLimit] = useState(40);
   const [isTestModalOpen, setIsTestModalOpen] = useState(false);
   const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
   const [selectedTestId, setSelectedTestId] = useState(null);
-  const [question, setQuestion] = useState("");
-  const [options, setOptions] = useState(["", "", "", ""]);
-  const [correct, setCorrect] = useState(0);
 
   useEffect(() => {
     if (topic_id) {
@@ -55,14 +50,7 @@ const TopicPage = () => {
       .single();
     if (!error) setTopic(data);
   };
-  const fetchtest = async () => {
-    const { data, error } = await supabase
-      .from("tests")
-      .select("*")
-      .eq("topic_id", topic_id)
-      .single();
-    if (!error) setTopic(data);
-  };
+
 
   const fetchTests = async () => {
     const { data, error } = await supabase
@@ -72,103 +60,7 @@ const TopicPage = () => {
     if (!error) setTests(data);
   };
 
-  const handleAddTest = async () => {
-    const { data, error } = await supabase
-      .from("tests")
-      .insert([
-        { topic_id, name: testName, time_limit: timeLimit, questions: [] },
-      ]);
-    if (!error) {
-      setIsTestModalOpen(false);
-      setTestName("");
-      fetchTests();
-    }
-  };
 
-  const handleAddQuestion = async () => {
-    const newQuestion = {
-      question_id: Math.floor(100000 + Math.random() * 900000),
-      question,
-      optionA: options[0],
-      optionB: options[1],
-      optionC: options[2],
-      optionD: options[3],
-      answer: options[correct - 1], // To'g'ri javob sifatida tanlangan variant qo'yiladi
-    };
-
-    const { data, error } = await supabase
-      .from("tests")
-      .update({
-        questions: [
-          ...tests.find((t) => t.id === selectedTestId).questions,
-          newQuestion,
-        ],
-      })
-      .eq("id", selectedTestId);
-
-    if (!error) {
-      setIsQuestionModalOpen(false);
-      setQuestion("");
-      setOptions(["", "", "", ""]);
-      setCorrect(0); // To'g'ri javobni reset qilish
-      fetchTests();
-    }
-  };
-
-  const handleDeleteQuestion = async (selectedTest, question_id) => {
-    if (!question_id) {
-      console.error("Error: question_id is null or undefined");
-      return;
-    }
-
-    console.log("Deleting question with id:", question_id);
-
-    if (!selectedTest || !selectedTest.questions) {
-      console.error("Error: Selected test or questions not found");
-      return;
-    }
-
-    const updatedQuestions = selectedTest.questions.filter(
-      (q) => q.question_id !== question_id
-    );
-
-    console.log(selectedTest.id);
-
-    const { data, error } = await supabase
-      .from("tests")
-      .update({
-        questions: updatedQuestions,
-      })
-      .eq("id", selectedTest.id);
-
-    if (!error) {
-      console.log("Savol muvaffaqiyatli o‘chirildi:", question_id);
-      fetchTests(); // Yangilanishi uchun testlarni qayta yuklaymiz
-    } else {
-      console.error("Error deleting question:", error);
-    }
-  };
-
-  const uploadFile = async (topicId, file) => {
-    if (!file) return { error: "No file selected" };
-
-    const filePath = `notes/${file.name}`;
-
-    const { data, error } = await supabase.storage
-      .from("notes")
-      .upload(filePath, file);
-
-    if (error) {
-      console.error("Error uploading file:", error);
-      toast.error("Error uploading file:", error);
-      return { error };
-    }
-
-    const publicUrl = supabase.storage.from("notes").getPublicUrl(filePath).data
-      .publicUrl;
-
-    return { name: file.name, link: publicUrl };
-  };
 
   if (!topic) return <p>Loading...</p>;
 

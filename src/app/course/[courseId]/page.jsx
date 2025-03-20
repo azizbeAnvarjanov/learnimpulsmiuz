@@ -236,7 +236,8 @@ export default function CoursePage() {
                         className="object-contain"
                       />
                     </div>
-                    <h1 className="font-bold">{file.name}</h1>
+                    {/* <h1 className="font-bold">{file.name}</h1> <br /><br /> */}
+                    <Link href={file.url} className="font-bold">sdddd</Link>
                   </div>
                 ))}
                 {selectedTopic?.ppts.map((file, idx) => (

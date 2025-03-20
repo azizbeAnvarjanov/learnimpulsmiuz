@@ -155,12 +155,12 @@ const TestPlayingPage = () => {
                     </p>
                     <br />
                     <p className="mt-1">
-                      Sizning javobingiz:{" "}
+                      Sizning javobingiz: <br />
                       <strong>{userAnswer || "Tanlanmagan"}</strong>
                     </p>
                     <br />
                     <p>
-                      To‘g‘ri javob: <strong>{item.answer}</strong>
+                      To‘g‘ri javob: <br /> <strong>{item.answer}</strong>
                     </p>
                   </div>
                   {isCorrect ? (
