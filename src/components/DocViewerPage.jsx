@@ -39,12 +39,11 @@ const DocViewerPage = ({ docsarr }) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-5 overflow-hidden bg-red-500">
+    <div className="flex flex-col items-center justify-center overflow-hidden">
       {docs.length > 0 ? (
-        <div className="w-full h-[100vh] border p-4 bg-white rounded shadow-md">
+        <div className="w-full border p-4 bg-white rounded shadow-md">
           <DocViewer
             documents={docs}
-            className="!min-h-[100vh]"
             config={{
               header: {
                 disableHeader: false,

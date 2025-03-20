@@ -106,8 +106,7 @@ export default function TopicsSheet({
                           className="object-contain"
                         />
                       </div>
-                      {/* <h1 className="font-bold">{file.name}</h1> */}
-                      <Link href={file.url} className="font-bold">sdddd</Link>
+                      <h1 className="font-bold">{file.name}</h1>
                     </div>
                   ))}
                   {selectedTopic?.ppts.map((file, idx) => (

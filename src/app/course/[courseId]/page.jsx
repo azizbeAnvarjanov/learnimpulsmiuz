@@ -28,6 +28,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function CoursePage() {
   const params = useParams();
@@ -141,6 +142,8 @@ export default function CoursePage() {
       </div>
     );
 
+  console.log(selectedTopic?.ppts);
+
   return (
     <div className="flex flex-col md:flex-row items-start max-h-screen overflow-hidden">
       <div className="player-thumb w-full md:w-[75%] overflow-y-scroll scrollbar-hide max-h-screen">
@@ -180,9 +183,18 @@ export default function CoursePage() {
             {selectedTopic?.description}{" "}
           </div>
         </div>
-        {/* <DocViewerPage docsarr={selectedTopic?.notes} /> */}
-        <PptViewer fileUrl="https://uetyhxypnwjyronmbmcx.supabase.co/storage/v1/object/public/ppts/ppts/121859160/Patho-1.pptx" />
-        
+        <Tabs defaultValue="pdf" className="">
+          <TabsList className="w-full flex items-start justify-start">
+            <TabsTrigger value="pdf">PDF</TabsTrigger>
+            <TabsTrigger value="ppt">PPT</TabsTrigger>
+          </TabsList>
+          <TabsContent value="pdf">
+            <DocViewerPage docsarr={selectedTopic?.notes} />
+          </TabsContent>
+          <TabsContent value="ppt">
+            {selectedTopic?.ppts && <PptViewer notes={selectedTopic?.ppts} />}
+          </TabsContent>
+        </Tabs>
       </div>
       <div className="w-full hidden md:block md:w-[25%] h-[100vh] border-l player-thumb overflow-y-scroll">
         <div className="flex items-center gap-1 p-3 justify-between">
@@ -237,10 +249,7 @@ export default function CoursePage() {
                         className="object-contain"
                       />
                     </div>
-                    {/* <h1 className="font-bold">{file.name}</h1> <br /><br /> */}
-                    <Link href={file.url} className="font-bold">
-                      sdddd
-                    </Link>
+                    <h1 className="font-bold">{file.name}</h1>
                   </div>
                 ))}
                 {selectedTopic?.ppts.map((file, idx) => (
