@@ -4,7 +4,7 @@ const PptViewer = ({ fileUrl }) => {
   )}`;
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-[50vh]">
       <iframe src={viewerUrl} className="w-full h-full" />
     </div>
   );
