@@ -1,8 +1,17 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
-import { LogOut } from "lucide-react";
+import { AlignJustify, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const StudentNavbar = () => {
   const pathname = usePathname();
@@ -12,7 +21,13 @@ const StudentNavbar = () => {
   };
   return (
     <div className="h-[8vh] flex items-center gap-2 px-5 border-b justify-between">
-      <div className="flex items-center gap-3">
+      <Link
+        href={"/"}
+        className="min-w-[40px] min-h-[40px] md:min-w-[50px] md:min-h-[50px] relative"
+      >
+        <Image fill src={"/logo.png"} alt="" className="object-contain" />
+      </Link>
+      <div className="hidden md:flex items-center gap-3">
         <Link
           className={`border py-1 px-5 rounded-md ${
             pathname === "/" ? "bg-blue-500 text-white" : ""
@@ -30,7 +45,40 @@ const StudentNavbar = () => {
           Ariza topshirish
         </Link>
       </div>
-      <Button onClick={logOutF} variant="destructive">
+      <Sheet>
+        <SheetTrigger className="grid md:hidden ">
+          <AlignJustify />
+        </SheetTrigger>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Ta'lim platformasi</SheetTitle>
+            <SheetDescription className="space-y-1">
+              <Link
+                className={`border flex py-2 px-5 rounded-md ${
+                  pathname === "/" ? "bg-blue-500 text-white" : ""
+                }`}
+                href={"/"}
+              >
+                Fanlar
+              </Link>
+              <Link
+                className={`border flex py-2 px-5 rounded-md ${
+                  pathname === "/applications" ? "bg-blue-500 text-white" : ""
+                }`}
+                href={"/applications"}
+              >
+                Ariza topshirish
+              </Link>
+            </SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+
+      <Button
+        className="hidden md:block"
+        onClick={logOutF}
+        variant="destructive"
+      >
         <LogOut />
       </Button>
     </div>
