@@ -7,6 +7,7 @@ import { supabase } from "./supabaseClient";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import StudentNavbar from "@/components/StudentNavbar";
 
 const Home = () => {
   const router = useRouter();
@@ -105,52 +106,56 @@ const Home = () => {
   }
 
   return (
-    <div className="p-5">
-      <h2 className="text-lg font-bold mb-4">Kurslarni Tanlang</h2>
-      <div className="flex flex-wrap gap-2 mb-6">
-        {["1", "2", "3", "4", "5", "6"].map((num) => (
-          <Label
-            key={num}
-            className={`flex items-center gap-2 border py-2 px-4 rounded-xl cursor-pointer hover:bg-blue-500 hover:text-white transition-all ${
-              kurs === `${num}-kurs` ? "bg-blue-500 text-white shadow-xl" : "border-dashed"
-            }`}
-          >
-            <Input
-              type="radio"
-              name="kurs"
-              value={`${num}-kurs`}
-              checked={kurs === `${num}-kurs`}
-              onChange={handleKursChange}
-              className="hidden"
-            />
-            {num}-kurs
-          </Label>
-        ))}
-      </div>
+    <div>
+      <StudentNavbar />
+      <div className="p-5">
+        <h2 className="text-lg font-bold mb-4">Kurslarni Tanlang</h2>
+        <div className="flex flex-wrap gap-2 mb-6">
+          {["1", "2", "3", "4", "5", "6"].map((num) => (
+            <Label
+              key={num}
+              className={`flex items-center gap-2 border py-2 px-4 rounded-xl cursor-pointer hover:bg-blue-500 hover:text-white transition-all ${
+                kurs === `${num}-kurs`
+                  ? "bg-blue-500 text-white shadow-xl"
+                  : "border-dashed"
+              }`}
+            >
+              <Input
+                type="radio"
+                name="kurs"
+                value={`${num}-kurs`}
+                checked={kurs === `${num}-kurs`}
+                onChange={handleKursChange}
+                className="hidden"
+              />
+              {num}-kurs
+            </Label>
+          ))}
+        </div>
 
-      <h2 className="text-lg font-bold">Fanlar</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-        {courses.map((course) => (
-          <Link
-            href={`/course/${course.course_id}`}
-            key={course.id}
-            className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
-          >
-            <img
-              src={course.banner_url}
-              alt={course.name}
-              className="w-full h-[200px] object-cover rounded-t-md"
-            />
-            <div className="p-4">
-              <p className="font-bold text-xl">{course.name}</p>
-              <p>
-              </p>
-              <p>
-                <strong>Kurs:</strong> {course.kurs}
-              </p>
-            </div>
-          </Link>
-        ))}
+        <h2 className="text-lg font-bold">Fanlar</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          {courses.map((course) => (
+            <Link
+              href={`/course/${course.course_id}`}
+              key={course.id}
+              className="border mt-3 gap-3 shadow-xl rounded-lg hover:bg-muted"
+            >
+              <img
+                src={course.banner_url}
+                alt={course.name}
+                className="w-full h-[200px] object-cover rounded-t-md"
+              />
+              <div className="p-4">
+                <p className="font-bold text-xl">{course.name}</p>
+                <p></p>
+                <p>
+                  <strong>Kurs:</strong> {course.kurs}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

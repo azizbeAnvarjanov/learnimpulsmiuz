@@ -23,6 +23,16 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import clsx from "clsx";
+import StudentNavbar from "@/components/StudentNavbar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CalendarDays, Eye } from "lucide-react";
+import Image from "next/image";
 
 const statusColors = {
   Yuborildi: "bg-blue-500",
@@ -101,76 +111,108 @@ const ApplicationPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-xl font-bold mb-4">Ariza Yuborish</h2>
-      <Textarea
-        placeholder="Ariza matnini kiriting..."
-        value={applicationText}
-        onChange={(e) => setApplicationText(e.target.value)}
-        className="w-full mb-4"
-      />
-      <Button onClick={handleSubmit} disabled={loading}>
-        {loading ? "Yuborilmoqda..." : "Yuborish"}
-      </Button>
-      <h2 className="text-xl  font-bold mt-6 mb-4">Yuborilgan Arizalar</h2>
-      <div className="mt-4 space-y-4">
-        {loading ? (
-          <p className="text-center text-gray-500">⏳ Yuklanmoqda...</p>
-        ) : applications.length === 0 ? (
-          <p className="text-center text-gray-500">❌ Arizalar topilmadi</p>
-        ) : (
-          applications.map((app) => (
-            <div key={app.id} className="border p-4 rounded-lg shadow-md">
-              <p className="text-sm text-gray-600">
-                {new Date(app.created_at).toLocaleString()}
-              </p>
-              <div className="line-clamp-2 text-gray-800 mt-2">
-                {app.student_application}
-              </div>
-              <Drawer>
-                <DrawerTrigger asChild>
-                  <Button
-                    variant="link"
-                    className="text-blue-500 p-0 mt-2"
-                    onClick={() => setSelectedApplication(app)}
-                  >
-                    Batafsil
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent>
-                  <DrawerHeader className="pb-40">
-                    <DrawerTitle className="max-w-[500px] mx-auto text-2xl">
-                      Ariza Tafsilotlari
-                    </DrawerTitle>
-                    {selectedApplication && ( // ❗ Oldini olish uchun shart qo‘shildi
-                      <div className="max-w-[500px] mx-auto">
-                        <div className="flex items-center justify-between">
-                          <div className="text-sm text-gray-500">
-                            {new Date(
-                              selectedApplication.created_at
-                            ).toLocaleString()}
-                          </div>
-                          <div
-                            className={clsx(
-                              "inline-block mt-2 text-white px-3 py-1 rounded-full text-sm",
-                              statusColors[selectedApplication.status] ||
-                                "bg-gray-500"
-                            )}
-                          >
-                            {selectedApplication.status}
-                          </div>
-                        </div>
-                        <div className="mt-2 text-gray-800 !text-left flex items-start justify-start">
-                          {selectedApplication.student_application}
-                        </div>
+    <div>
+      <StudentNavbar />
+
+      <div className="md:max-w-[70%] gap-5 mx-auto p-4 grid md:grid-cols-2">
+        <div>
+          <h2 className="text-xl font-bold mb-4">Ariza Yuborish</h2>
+          <Textarea
+            placeholder="Ariza matnini kiriting..."
+            value={applicationText}
+            onChange={(e) => setApplicationText(e.target.value)}
+            className="w-full mb-4 h-[20vh]"
+          />
+          <Button onClick={handleSubmit} disabled={loading}>
+            {loading ? "Yuborilmoqda..." : "Yuborish"}
+          </Button>
+        </div>
+        <div>
+          <h2 className="text-xl font-bold mb-4">Yuborilgan Arizalar</h2>
+          <div className="mt-4 space-y-4">
+            {loading ? (
+              <p className="text-center text-gray-500">⏳ Yuklanmoqda...</p>
+            ) : applications.length === 0 ? (
+              <p className="text-center text-gray-500">❌ Arizalar topilmadi</p>
+            ) : (
+              applications.map((app) => (
+                <div
+                  key={app.id}
+                  className="border p-3 rounded-lg shadow-md flex items-center justify-between gap-2"
+                >
+                  <div className="flex items-start">
+                    <div className="min-w-[50px] min-h-[50px] relative">
+                      <Image
+                        src={"/doc.png"}
+                        fill
+                        alt=""
+                        className="object-contain"
+                      />
+                    </div>
+                    <div>
+                      <div className="line-clamp-1 text-gray-800">
+                        {app.student_application}
                       </div>
-                    )}
-                  </DrawerHeader>
-                </DrawerContent>
-              </Drawer>
-            </div>
-          ))
-        )}
+                      <p className="text-sm text-gray-600 flex gap-1 items-center mt-1">
+                        <CalendarDays size={17} />
+                        {new Date(app.created_at).toLocaleString()}
+                      </p>{" "}
+                    </div>
+                  </div>
+                  <br />
+                  {/* Dialog Trigger */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        className="w-[40px] h-[40px] bg-[#2196f3] rounded-xl"
+                        onClick={() => setSelectedApplication(app)}
+                      >
+                        <Eye />
+                      </Button>
+                    </DialogTrigger>
+
+                    {/* Dialog Content */}
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle className="max-w-[500px] mx-auto text-2xl">
+                          Ariza Tafsilotlari
+                        </DialogTitle>
+                      </DialogHeader>
+
+                      {selectedApplication && (
+                        <div className="space-y-4">
+                          <div className="md:flex items-center justify-between">
+                            <p className="text-sm text-gray-600 flex gap-1 items-center mt-1">
+                              <CalendarDays size={17} />
+                              {new Date(app.created_at).toLocaleString()}
+                            </p>{" "}
+                            <div
+                              className={clsx(
+                                "inline-block mt-2 text-white px-3 py-1 rounded-full text-sm",
+                                statusColors[selectedApplication.status] ||
+                                  "bg-gray-500"
+                              )}
+                            >
+                              {selectedApplication.status}
+                            </div>
+                          </div>
+                          <div className="mt-2 text-gray-800 text-left">
+                            {selectedApplication.student_application}
+                          </div>
+                          <p className="mt-2"></p>
+                          <div className="text-gray-800 text-left">
+                            <strong>Ariza natijasi: </strong>
+                            {selectedApplication.result_application}
+                          </div>
+                        </div>
+                      )}
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
