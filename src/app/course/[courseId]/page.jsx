@@ -160,8 +160,6 @@ export default function CoursePage() {
             selectedTopic={selectedTopic}
             handleTopicClick={handleTopicClick}
             test={test}
-            pdfUrl={setLayout}
-            setLayout={setLayout}
           />
         </div>
         <div className="w-full h-[300px] md:h-[700px] overflow-hidden">
@@ -274,7 +272,10 @@ export default function CoursePage() {
                     className="flex hover:bg-muted items-center gap-2 border p-3 rounded-lg bg-white"
                   >
                     <div className="flex items-center gap-2">
+                      <div className="min-w-[30px] min-h-[20px]">
                       <BookOpenCheck />
+
+                      </div>
                       <h1 className="font-bold">{test.name}</h1>
                     </div>
                   </Link>

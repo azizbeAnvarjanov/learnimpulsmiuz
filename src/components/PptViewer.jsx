@@ -34,7 +34,7 @@ const PptViewerTabs = ({ notes }) => {
             src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
               note.url
             )}`}
-            className="w-full h-[50vh] md:h-screen border"
+            className="w-full h-[50vh] md:h-screen border pb-32"
           />
         </TabsContent>
       ))}

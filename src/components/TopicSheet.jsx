@@ -25,9 +25,6 @@ export default function TopicsSheet({
   selectedTopic,
   handleTopicClick,
   test,
-  pdfUrl,
-  setPdfUrl,
-  setLayout,
 }) {
   const [topics, setTopics] = useState([]);
   const [open, setOpen] = useState(false);
@@ -135,7 +132,9 @@ export default function TopicsSheet({
                       className="flex items-center gap-2 border p-3 rounded-lg bg-white"
                     >
                       <div className="flex items-center gap-2">
-                        <BookOpenCheck />
+                        <div className="min-w-[30px] min-h-[20px]">
+                          <BookOpenCheck />
+                        </div>
                         <h1 className="font-bold">{test.name}</h1>
                       </div>
                     </Link>
