@@ -35,6 +35,12 @@ const Dashboard = () => {
       if (user.role === "student") {
         router.push("/"); // Agar cookie bo‘lmasa, login sahifasiga qaytarish
       }
+      if (user.role === "Employee") {
+        router.push("/arizalar"); // Agar cookie bo‘lmasa, login sahifasiga qaytarish
+      }
+      if (user.role === "register_admin") {
+        router.push("/dashboard/applications"); // Agar cookie bo‘lmasa, login sahifasiga qaytarish
+      }
     } else {
       router.push("/login"); // Agar cookie bo‘lmasa, login sahifasiga qaytarish
     }
