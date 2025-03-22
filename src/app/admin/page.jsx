@@ -143,6 +143,7 @@ const AdminPage = () => {
             <SelectContent>
               <SelectItem value="Admin">Admin</SelectItem>
               <SelectItem value="Super Admin">Super Admin</SelectItem>
+              <SelectItem value="Employee">Employee</SelectItem>
               <SelectItem value="Teacher">Teacher</SelectItem>
             </SelectContent>
           </Select>
