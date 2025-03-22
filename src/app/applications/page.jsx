@@ -3,25 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-hot-toast";
-import { createClient } from "@supabase/supabase-js";
 import { supabase } from "../supabaseClient";
 import Cookies from "js-cookie";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+
 import clsx from "clsx";
 import StudentNavbar from "@/components/StudentNavbar";
 import {
@@ -47,8 +31,6 @@ const ApplicationPage = () => {
   const [applications, setApplications] = useState([]);
   const [user, setUser] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(null);
-
-  console.log(user);
 
   useEffect(() => {
     const userData = Cookies.get("user");
@@ -104,10 +86,47 @@ const ApplicationPage = () => {
       console.error(error);
     } else {
       toast.success("Ariza muvaffaqiyatli yuborildi");
+      sendToTelegram(user?.fio, applicationText);
       setApplicationText("");
       fetchApplications(user?.id);
     }
     setLoading(false);
+  };
+
+  const sendToTelegram = async (studentName, applicationText) => {
+    const token = "7849058559:AAE9exbdwx13H0XJ_0ePqUxGlJ7o4DSIDf8"; // O'zingizning bot tokeningizni qo'ying
+    const chat_id = "-4691710080"; // O'zingizning guruh chat ID'ingizni qo'ying
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+    const message = `
+📢 *Yangi ariza kelib tushdi!* 📝
+
+👤 *Talaba:* ${studentName}
+📄 *Ariza matni:* ${applicationText}
+📅 *Vaqt:* ${new Date().toLocaleString()}
+
+🔗 *Batafsil ko‘rish uchun tizimga kiring. learn.impulsmi.uz*
+`;
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chat_id,
+          text: message,
+          parse_mode: "Markdown",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Telegram API xatosi");
+      }
+
+      console.log("Telegramga xabar yuborildi!");
+    } catch (error) {
+      console.error("Telegram xabari yuborilmadi:", error);
+    }
   };
 
   return (
