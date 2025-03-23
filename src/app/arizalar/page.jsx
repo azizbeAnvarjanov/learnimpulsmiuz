@@ -25,7 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog2";
 import {
   ChevronLeft,
   ChevronRight,
@@ -33,55 +33,53 @@ import {
   SendHorizontal,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Cookies from "js-cookie";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(null);
-  const [employees, setEmployees] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState("");
-  const [result, setResult] = useState("");
   const [newComment, setNewComment] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
+  const [user, setuser] = useState(null);
+
+  useEffect(() => {
+    const userData = Cookies.get("user");
+    if (userData) {
+      setuser(JSON.parse(userData)); // Cookie'dan ma'lumotni olish va holatga saqlash
+    }
+  }, []);
 
   async function fetchApplications() {
     let { data, error } = await supabase
       .from("applications")
       .select(
         `
-      id,
-      status,
-      created_at,
-      result_application,
-      student_application,
-      comments,
-      students(*),
-      taqsimlovchi:employees!applications_taqsimlovchi_fkey(*),
-      bajaruvchi:employees!applications_bajaruvchi_fkey(*)
-    `
+        id,
+        status,
+        created_at,
+        result_application,
+        student_application,
+        comments,
+        students(*),
+        taqsimlovchi:employees!applications_taqsimlovchi_fkey(*),
+        bajaruvchi:employees!applications_bajaruvchi_fkey(*)
+        `
       )
-      .order("created_at", { ascending: false });
-
+      .order("created_at", { ascending: false })
+      .eq("bajaruvchi", user?.id);
     if (error) console.error(error);
     else setApplications(data);
   }
 
-  useEffect(() => {
-    fetchApplications();
-  }, []);
 
   useEffect(() => {
-    async function fetchEmployees() {
-      let { data, error } = await supabase
-        .from("employees")
-        .select("*")
-        .eq("role", "Employee");
-      if (error) console.error(error);
-      else setEmployees(data);
+    if (user) {
+      // Faqat user mavjud bo'lsa chaqiramiz
+      fetchApplications();
     }
-    fetchEmployees();
-  }, []);
+  }, [user]);
 
   const handleView = (application) => {
     setSelectedApplication(application);
@@ -176,14 +174,43 @@ export default function ApplicationsPage() {
       </Table>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
           <DialogHeader>
             <DialogTitle>Kommentariyalar</DialogTitle>
             <DialogClose onClick={() => setIsDialogOpen(false)} />
           </DialogHeader>
-          {selectedApplication && (
-            <div>
-              <div className="flex items-center justify-between gap-2 mb-4">
+        <DialogContent>
+          <div className="flex items-start">
+              <div className="h-full w-full p-5">
+                {selectedApplication && (
+                  <div>
+                    <p>
+                      <strong>Talaba:</strong>{" "}
+                      {selectedApplication.students?.fio}
+                    </p>
+                    <p>
+                      <strong>Kursi:</strong>{" "}
+                      {selectedApplication.students?.kurs}
+                    </p>
+                    <p>
+                      <strong>Guruxi:</strong>{" "}
+                      {selectedApplication.students?.guruh}
+                    </p>
+                    <br />
+                    <p>
+                      <strong>Ariza:</strong>{" "}
+                      {selectedApplication.student_application}
+                    </p>
+                    <br />
+                    <p>
+                      <strong>Natija:</strong>{" "}
+                      {selectedApplication.result_application}
+                    </p>
+                  </div>
+                )}
+              </div>
+              <div className="border-l h-full w-full p-4">
+                <div className="overflow-y-auto p-1">
+                <div className="flex items-center justify-between gap-2 mb-4">
                 <Input
                   type="text"
                   placeholder="Kommentariya yozish..."
@@ -198,29 +225,27 @@ export default function ApplicationsPage() {
                   <SendHorizontal />
                 </Button>
               </div>
+                  {selectedApplication?.comments?.length ? (
+                    selectedApplication?.comments.map((comment, index) => (
+                      <div key={index} className="p-2 border mb-2 rounded-md">
+                        <div className="flex items-center justify-between">
+                          <p className="text-[15px] font-semibold">
+                            {comment.user}
+                          </p>
 
-              <div className="max-h-40 overflow-y-auto">
-                {selectedApplication.comments?.length ? (
-                  selectedApplication.comments.map((comment, index) => (
-                    <div key={index} className="p-2 border mb-2 rounded-md">
-                      <div className="flex items-center justify-between">
-                        <p className="text-[15px] font-semibold">
-                          {comment.user}
+                          <p className="text-[12px]">{comment.timestamp}</p>
+                        </div>
+                        <p className="">
+                          <span className="">{comment.text}</span>{" "}
                         </p>
-
-                        <p className="text-[12px]">{comment.timestamp}</p>
                       </div>
-                      <p className="">
-                        <span className="">{comment.text}</span>{" "}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p>Kommentariya yo‘q</p>
-                )}
+                    ))
+                  ) : (
+                    <p>Kommentariya yo‘q</p>
+                  )}
+                </div>
               </div>
             </div>
-          )}
         </DialogContent>
       </Dialog>
     </div>
