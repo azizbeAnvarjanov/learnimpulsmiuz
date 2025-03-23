@@ -23,5 +23,5 @@ export function middleware(req) {
 
 // Middleware faqat shu sahifalar uchun ishlaydi
 export const config = {
-  matcher: ["/", "/dashboard", "/test/:path*", "/dashboard/:path*", "/course/:path*", "/my-profile", "/admin"],
+  matcher: ["/", "/dashboard","/arizalar", "/test/:path*", "/dashboard/:path*", "/course/:path*", "/my-profile", "/admin"],
 };
