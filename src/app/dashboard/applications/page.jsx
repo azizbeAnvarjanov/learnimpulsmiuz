@@ -262,11 +262,10 @@ export default function ApplicationsPage() {
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
           <DialogHeader>
             <DialogTitle>Ariza Tafsilotlari</DialogTitle>
             <DialogClose onClick={() => setIsDialogOpen(false)} />
-          </DialogHeader>
-          <DialogContent>
             <div className="flex items-start">
               <div className="h-full w-full p-5">
                 {selectedApplication && (
@@ -388,6 +387,7 @@ export default function ApplicationsPage() {
                 </div>
               </div>
             </div>
+          </DialogHeader>
           </DialogContent>
         </Dialog>
       </div>

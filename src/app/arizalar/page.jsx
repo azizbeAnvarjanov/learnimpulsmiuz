@@ -73,7 +73,6 @@ export default function ApplicationsPage() {
     else setApplications(data);
   }
 
-
   useEffect(() => {
     if (user) {
       // Faqat user mavjud bo'lsa chaqiramiz
@@ -174,78 +173,77 @@ export default function ApplicationsPage() {
       </Table>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Kommentariyalar</DialogTitle>
             <DialogClose onClick={() => setIsDialogOpen(false)} />
-          </DialogHeader>
-        <DialogContent>
+
           <div className="flex items-start">
-              <div className="h-full w-full p-5">
-                {selectedApplication && (
-                  <div>
-                    <p>
-                      <strong>Talaba:</strong>{" "}
-                      {selectedApplication.students?.fio}
-                    </p>
-                    <p>
-                      <strong>Kursi:</strong>{" "}
-                      {selectedApplication.students?.kurs}
-                    </p>
-                    <p>
-                      <strong>Guruxi:</strong>{" "}
-                      {selectedApplication.students?.guruh}
-                    </p>
-                    <br />
-                    <p>
-                      <strong>Ariza:</strong>{" "}
-                      {selectedApplication.student_application}
-                    </p>
-                    <br />
-                    <p>
-                      <strong>Natija:</strong>{" "}
-                      {selectedApplication.result_application}
-                    </p>
-                  </div>
+            <div className="h-full w-full p-5">
+              {selectedApplication && (
+                <div>
+                  <p>
+                    <strong>Talaba:</strong> {selectedApplication.students?.fio}
+                  </p>
+                  <p>
+                    <strong>Kursi:</strong> {selectedApplication.students?.kurs}
+                  </p>
+                  <p>
+                    <strong>Guruxi:</strong>{" "}
+                    {selectedApplication.students?.guruh}
+                  </p>
+                  <br />
+                  <p>
+                    <strong>Ariza:</strong>{" "}
+                    {selectedApplication.student_application}
+                  </p>
+                  <br />
+                  <p>
+                    <strong>Natija:</strong>{" "}
+                    {selectedApplication.result_application}
+                  </p>
+                </div>
+              )}
+            </div>
+            <div className="border-l h-full w-full p-4">
+              <div className="overflow-y-auto p-1">
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <Input
+                    type="text"
+                    placeholder="Kommentariya yozish..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className="border p-2 w-full"
+                  />
+                  <Button
+                    onClick={handleAddComment}
+                    className="w-[35px] h-[35px]"
+                  >
+                    <SendHorizontal />
+                  </Button>
+                </div>
+                {selectedApplication?.comments?.length ? (
+                  selectedApplication?.comments.map((comment, index) => (
+                    <div key={index} className="p-2 border mb-2 rounded-md">
+                      <div className="flex items-center justify-between">
+                        <p className="text-[15px] font-semibold">
+                          {comment.user}
+                        </p>
+
+                        <p className="text-[12px]">{comment.timestamp}</p>
+                      </div>
+                      <p className="">
+                        <span className="">{comment.text}</span>{" "}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p>Kommentariya yo‘q</p>
                 )}
               </div>
-              <div className="border-l h-full w-full p-4">
-                <div className="overflow-y-auto p-1">
-                <div className="flex items-center justify-between gap-2 mb-4">
-                <Input
-                  type="text"
-                  placeholder="Kommentariya yozish..."
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  className="border p-2 w-full"
-                />
-                <Button
-                  onClick={handleAddComment}
-                  className="w-[35px] h-[35px]"
-                >
-                  <SendHorizontal />
-                </Button>
-              </div>
-                  {selectedApplication?.comments?.length ? (
-                    selectedApplication?.comments.map((comment, index) => (
-                      <div key={index} className="p-2 border mb-2 rounded-md">
-                        <div className="flex items-center justify-between">
-                          <p className="text-[15px] font-semibold">
-                            {comment.user}
-                          </p>
-
-                          <p className="text-[12px]">{comment.timestamp}</p>
-                        </div>
-                        <p className="">
-                          <span className="">{comment.text}</span>{" "}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p>Kommentariya yo‘q</p>
-                  )}
-                </div>
-              </div>
             </div>
+          </div>
+          </DialogHeader>
         </DialogContent>
       </Dialog>
     </div>
