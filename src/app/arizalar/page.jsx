@@ -3,14 +3,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { supabase } from "@/app/supabaseClient";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -19,13 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from "@/components/ui/dialog2";
+
 import {
   CalendarDays,
   ChevronLeft,
@@ -36,7 +23,6 @@ import {
   Trello,
   User,
 } from "lucide-react";
-import DashbNavbar from "@/app/dashboard/DashboardNavbar";
 import { Input } from "@/components/ui/input";
 import Cookies from "js-cookie";
 
@@ -46,12 +32,10 @@ export default function ApplicationsPage() {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [result, setResult] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
   const [newComment, setNewComment] = useState("");
   const [user, setuser] = useState(null);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
 
@@ -105,44 +89,6 @@ export default function ApplicationsPage() {
   const handleView = (application) => {
     fetchApplications();
     setSelectedApplication(application);
-  };
-
-  const handleAssign = async (applicationId) => {
-    if (!selectedEmployee) return toast.error("Bajaruvchi tanlang!");
-    const { error } = await supabase
-      .from("applications")
-      .update({ bajaruvchi: selectedEmployee, status: "Ko‘rib chiqilmoqda" })
-      .eq("id", applicationId);
-    if (error) return console.error(error);
-
-    toast.success("Bajaruvchi biriktirildi!");
-    fetchApplications();
-  };
-
-  const handleCloseApplication = async (applicationId) => {
-    if (!result) return toast.error("Arizaning natijasini kiriting!");
-
-    const { error } = await supabase
-      .from("applications")
-      .update({ status: "Ariza tugatildi", result_application: result })
-      .eq("id", applicationId);
-    if (error) return console.error(error);
-
-    toast.success("Ariza yopildi!");
-    fetchApplications();
-  };
-  const handleCancledApplication = async (applicationId) => {
-    if (!result)
-      return toast.error("Bekor qilish uchun arizaning natijasini kiriting!");
-
-    const { error } = await supabase
-      .from("applications")
-      .update({ status: "Bekor qilindi", result_application: result })
-      .eq("id", applicationId);
-    if (error) return console.error(error);
-
-    toast.success("Ariza Bekor qilindi!");
-    fetchApplications();
   };
 
   const handleAddComment = async () => {
@@ -207,8 +153,6 @@ export default function ApplicationsPage() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  console.log(selectedApplication);
 
   function formatUzbekistanTime(createdAt) {
     const date = new Date(createdAt);
@@ -446,52 +390,6 @@ export default function ApplicationsPage() {
                       <strong>Natija:</strong>{" "}
                       {selectedApplication.result_application}
                     </p>
-                    <br />
-
-                    <div className="flex items-center gap-3">
-                      <Select onValueChange={setSelectedEmployee}>
-                        <SelectTrigger className="">
-                          <SelectValue placeholder={"Bajaruvchini tanlang"} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {employees.map((emp) => (
-                            <SelectItem key={emp.id} value={emp.id}>
-                              {emp.fio}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Button
-                        onClick={() => handleAssign(selectedApplication.id)}
-                      >
-                        Bajaruvchini biriktirish
-                      </Button>
-                    </div>
-
-                    <Input
-                      type="text"
-                      placeholder="Natijani kiriting"
-                      value={result}
-                      onChange={(e) => setResult(e.target.value)}
-                      className="border p-2 mt-4 w-full"
-                    />
-                    <div className="mt-2 flex items-center gap-2">
-                      <Button
-                        onClick={() =>
-                          handleCloseApplication(selectedApplication.id)
-                        }
-                      >
-                        Arizani yopish
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          handleCancledApplication(selectedApplication.id)
-                        }
-                        variant="destructive"
-                      >
-                        Arizani bekor qilish
-                      </Button>
-                    </div>
                   </div>
                 </>
               ) : (

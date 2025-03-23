@@ -7,7 +7,6 @@ export function middleware(req) {
   const loginUrl = new URL("/login", req.url);
   const dashboardUrl = new URL("/", req.url);
 
-
   // Agar foydalanuvchi login qilmagan bo‘lsa va login sahifasida bo‘lmasa, login sahifasiga yo‘naltiramiz
   if (!user && req.nextUrl.pathname !== "/login") {
     return NextResponse.redirect(loginUrl);
@@ -23,5 +22,14 @@ export function middleware(req) {
 
 // Middleware faqat shu sahifalar uchun ishlaydi
 export const config = {
-  matcher: ["/", "/dashboard","/arizalar", "/test/:path*", "/dashboard/:path*", "/course/:path*", "/my-profile", "/admin"],
+  matcher: [
+    "/",
+    "/dashboard",
+    "/arizalar",
+    "/test/:path*",
+    "/dashboard/:path*",
+    "/course/:path*",
+    "/my-profile",
+    "/admin",
+  ],
 };
