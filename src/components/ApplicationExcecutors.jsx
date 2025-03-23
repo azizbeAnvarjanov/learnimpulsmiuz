@@ -19,6 +19,7 @@ const ApplicationExcecutors = ({ applicationId }) => {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -77,7 +78,7 @@ const ApplicationExcecutors = ({ applicationId }) => {
     setSaving(true);
     const { error } = await supabase
       .from("applications")
-      .update({ bajaruvchilar: tempEditors })
+      .update({ bajaruvchilar: tempEditors,status: "Ko‘rib chiqilmoqda" })
       .eq("id", applicationId);
 
     if (error) {
@@ -112,9 +113,7 @@ const ApplicationExcecutors = ({ applicationId }) => {
                   key={employee.id}
                   className="flex items-center border border-gray-200 justify-between bg-gray-50 px-3 py-2 rounded-md"
                 >
-                  <span>
-                    {employee.fio}
-                  </span>
+                  <span>{employee.fio}</span>
                   <Switch
                     checked={tempEditors.some((e) => e.id === employee.id)}
                     onCheckedChange={() => toggleEditor(employee)}

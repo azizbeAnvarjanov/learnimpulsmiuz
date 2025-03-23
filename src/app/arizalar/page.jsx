@@ -297,6 +297,11 @@ export default function ApplicationsPage() {
     );
     setFilteredUsers(results);
   }, [searchTerm, applications]);
+
+  const refresh = () => {
+    setSelectedApplication(null);
+    toast.success("Ohirhgi arizalar yuklandi!");
+  };
   return (
     <div>
       {/* <DashbNavbar /> */}
@@ -317,7 +322,7 @@ export default function ApplicationsPage() {
                     }}
                   />
                   <Button
-                    onClick={fetchApplications}
+                    onClick={refresh}
                     className="w-[35px] h-[35px] grid place-items-center"
                     variant="outline"
                   >

@@ -75,7 +75,9 @@ export default function ApplicationsPage() {
       .order("created_at", { ascending: false });
 
     if (error) console.error(error);
-    else setApplications(data);
+    else {
+      setApplications(data);
+    }
   }
   useEffect(() => {
     fetchApplications();
@@ -88,7 +90,9 @@ export default function ApplicationsPage() {
         .select("*")
         .eq("role", "Employee");
       if (error) console.error(error);
-      else setEmployees(data);
+      else {
+        setEmployees(data);
+      }
     }
     fetchEmployees();
   }, []);
@@ -229,6 +233,11 @@ export default function ApplicationsPage() {
     return `${dayOfWeek}, ${formattedDate}`;
   }
 
+  const refresh = () => {
+    setSelectedApplication(null);
+    toast.success("Ohirhgi arizalar yuklandi!");
+  };
+
   function formatUzbekistanTime2(createdAt) {
     const date = new Date(createdAt);
 
@@ -340,7 +349,7 @@ export default function ApplicationsPage() {
           <div className="w-full border-b min-h-[92vh] grid grid-cols-3">
             <div className="w-full h-full overflow-y-auto max-h-[92vh] relative">
               <div className="flex items-center justify-between gap-2 p-2 border-b sticky top-0 left-0 bg-white w-full">
-                <h1 className="font-bold text-2xl">Arzialar</h1>
+                <h1 className="font-bold text-2xl">Arizalar</h1>
                 <div className="flex items-center gap-2">
                   <Input
                     className="w-[300px]"
@@ -351,7 +360,7 @@ export default function ApplicationsPage() {
                     }}
                   />
                   <Button
-                    onClick={fetchApplications}
+                    onClick={refresh}
                     className="w-[35px] h-[35px] grid place-items-center"
                     variant="outline"
                   >
@@ -433,9 +442,9 @@ export default function ApplicationsPage() {
                         : "Tayinlanmagan"}
                     </p> */}
 
-
-                    <ApplicationExcecutors applicationId={selectedApplication?.id}/>
-
+                    <ApplicationExcecutors
+                      applicationId={selectedApplication?.id}
+                    />
 
                     <br />
                     <p>
