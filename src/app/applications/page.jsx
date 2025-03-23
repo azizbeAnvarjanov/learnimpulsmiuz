@@ -75,6 +75,12 @@ const ApplicationPage = () => {
           user: user.fio,
         },
       ],
+      bajaruvchilar: [
+        {
+          id: 10,
+          user: "Registrator Ofis",
+        },
+      ],
       created_at: new Date().toISOString(),
     };
 

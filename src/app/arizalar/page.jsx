@@ -38,6 +38,7 @@ export default function ApplicationsPage() {
   const [user, setuser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userData = Cookies.get("user");
@@ -46,28 +47,43 @@ export default function ApplicationsPage() {
     }
   }, []);
 
-  async function fetchApplications() {
-    let { data, error } = await supabase
-      .from("applications")
-      .select(
-        `
-      id,
-      status,
-      created_at,
-      result_application,
-      student_application,
-      comments,
-      students(*),
-      taqsimlovchi:employees!applications_taqsimlovchi_fkey(*),
-      bajaruvchi:employees!applications_bajaruvchi_fkey(*)
-    `
-      )
-      .order("created_at", { ascending: false })
-      .eq("bajaruvchi", user?.id);
+  const fetchApplications = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("applications")
+        .select(
+          `id,
+        status,
+        created_at,
+        result_application,
+        student_application,
+        comments,
+        bajaruvchilar,
+        students(*),
+        taqsimlovchi:employees!applications_taqsimlovchi_fkey(*),
+        bajaruvchi:employees!applications_bajaruvchi_fkey(*)`
+        )
+        .order("created_at", { ascending: false });
 
-    if (error) console.error(error);
-    else setApplications(data);
-  }
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const filteredApplications = data
+        .filter((app) =>
+          app.bajaruvchilar.some((executor) => executor.id === user?.id)
+        )
+        .map((app) => app);
+
+      console.log(filteredApplications);
+      setApplications(filteredApplications);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       fetchApplications();

@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import DashbNavbar from "@/app/dashboard/DashboardNavbar";
 import { Input } from "@/components/ui/input";
+import ApplicationExcecutors from "@/components/ApplicationExcecutors";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
@@ -65,6 +66,7 @@ export default function ApplicationsPage() {
       result_application,
       student_application,
       comments,
+      bajaruvchilar,
       students(*),
       taqsimlovchi:employees!applications_taqsimlovchi_fkey(*),
       bajaruvchi:employees!applications_bajaruvchi_fkey(*)
@@ -92,7 +94,7 @@ export default function ApplicationsPage() {
   }, []);
 
   const handleView = (application) => {
-    fetchApplications()
+    fetchApplications();
     setSelectedApplication(application);
   };
 
@@ -326,6 +328,9 @@ export default function ApplicationsPage() {
     );
     setFilteredUsers(results);
   }, [searchTerm, applications]);
+
+  console.log(selectedApplication);
+
   return (
     <div>
       {/* <DashbNavbar /> */}
@@ -357,25 +362,27 @@ export default function ApplicationsPage() {
               {filteredUsers.map((app, idx) => (
                 <div
                   onClick={() => handleView(app)}
-                  className={`"border-b p-1 flex items-center hover:bg-muted cursor-pointer " ${
+                  className={`" border-b p-1 flex items-center hover:bg-muted cursor-pointer " ${
                     selectedApplication?.id === app?.id &&
-                    "bg-gray-200 hover:bg-gray-200 cursor-pointer"
+                    "bg-gray-200 hover:bg-gray-200 cursor-pointer border-b"
                   }`}
                   key={idx}
                 >
-                  <div className="p-2">
-                    <div className="flex items-center gap-1">
-                      <span className={getStatusColor(app.status)}> </span>
-                      <h1 className="text-[13px] line-clamp-1 capitalize font-medium">
-                        {app.students?.fio || "Noma’lum"}
-                      </h1>
-                      <h1 className="text-[12px] w-fit ml-auto text-gray-500 line-clamp-1">
-                        {formatUzbekistanTime(app.created_at) || "Noma’lum"}
+                  <div className="p-2 w-full">
+                    <div>
+                      <div className="flex items-center w-full justify-between gap-1">
+                        <span className={getStatusColor(app.status)}> </span>
+                        <h1 className="text-[13px] line-clamp-1 capitalize font-medium">
+                          {app.students?.fio || "Noma’lum"}
+                        </h1>
+                        <h1 className="text-[12px] w-fit ml-auto text-gray-500 line-clamp-1">
+                          {formatUzbekistanTime(app.created_at) || "Noma’lum"}
+                        </h1>
+                      </div>
+                      <h1 className="text-[13px] text-gray-500 line-clamp-1">
+                        {app.student_application || "Noma’lum"}
                       </h1>
                     </div>
-                    <h1 className="text-[13px] text-gray-500 line-clamp-1">
-                      {app.student_application || "Noma’lum"}
-                    </h1>
                   </div>
                 </div>
               ))}
@@ -419,12 +426,17 @@ export default function ApplicationsPage() {
                       </div>
                     </div>
 
-                    <p className="flex items-center gap-2">
+                    {/* <p className="flex items-center gap-2">
                       <strong>Ma'sul:</strong>
                       {selectedApplication.bajaruvchi
                         ? selectedApplication.bajaruvchi.fio
                         : "Tayinlanmagan"}
-                    </p>
+                    </p> */}
+
+
+                    <ApplicationExcecutors applicationId={selectedApplication?.id}/>
+
+
                     <br />
                     <p>
                       <strong>Ariza:</strong> <br />
@@ -507,42 +519,41 @@ export default function ApplicationsPage() {
                 </Button>
               </div>
               <div className="px-3">
-              {selectedApplication?.comments?.length ? (
-                [...selectedApplication.comments] // Massivni nusxalash (mutatsiyaga yo'l qo'ymaslik uchun)
-                  .reverse() // Kommentlarni teskari tartibda chiqarish
-                  .map((comment, index) => (
-                    <div
-                      key={index}
-                      className={` mb-2 border w-[90%] ${
-                        comment.type === "admin"
-                          ? "ml-auto bg-blue-100 border-blue-400 rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none"
-                          : "mr-auto bg-gray-100 border-gray-400 rounded-tl-none rounded-tr-2xl rounded-bl-2xl rounded-br-2xl"
-                      }`}
-                    >
+                {selectedApplication?.comments?.length ? (
+                  [...selectedApplication.comments] // Massivni nusxalash (mutatsiyaga yo'l qo'ymaslik uchun)
+                    .reverse() // Kommentlarni teskari tartibda chiqarish
+                    .map((comment, index) => (
                       <div
-                        className={`${
+                        key={index}
+                        className={` mb-2 border w-[90%] ${
                           comment.type === "admin"
-                            ? "p-2 flex items-center justify-between border-b pb-1 border-blue-400"
-                            : "p-2 flex items-center justify-between border-b pb-1 border-gray-400"
+                            ? "ml-auto bg-blue-100 border-blue-400 rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none"
+                            : "mr-auto bg-gray-100 border-gray-400 rounded-tl-none rounded-tr-2xl rounded-bl-2xl rounded-br-2xl"
                         }`}
                       >
-                        <p className="text-[12px] font-semibold capitalize">
-                          {comment.type}
-                        </p>
-                        <p className="text-[12px]">
-                          {formatUzbekistanTime3(comment.timestamp)}
+                        <div
+                          className={`${
+                            comment.type === "admin"
+                              ? "p-2 flex items-center justify-between border-b pb-1 border-blue-400"
+                              : "p-2 flex items-center justify-between border-b pb-1 border-gray-400"
+                          }`}
+                        >
+                          <p className="text-[12px] font-semibold capitalize">
+                            {comment.type}
+                          </p>
+                          <p className="text-[12px]">
+                            {formatUzbekistanTime3(comment.timestamp)}
+                          </p>
+                        </div>
+                        <p className="p-2">
+                          <span className="text-sm">{comment.text}</span>
                         </p>
                       </div>
-                      <p className="p-2">
-                        <span className="text-sm">{comment.text}</span>
-                      </p>
-                    </div>
-                  ))
-              ) : (
-                <p>Kommentariya yo‘q</p>
-              )}
+                    ))
+                ) : (
+                  <p>Kommentariya yo‘q</p>
+                )}
               </div>
-         
             </div>
           </div>
 
