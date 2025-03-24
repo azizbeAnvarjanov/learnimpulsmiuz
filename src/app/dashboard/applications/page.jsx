@@ -323,7 +323,7 @@ export default function ApplicationsPage() {
 
     // Vaqtni formatlash
     const formatter = new Intl.DateTimeFormat("uz-UZ", options);
-    const formattedTime = formatter.format(date);
+    const formattedTime = formatter?.format(date);
 
     // Hafta kuni va oy nomini chiqarish
     const dayOfWeek = days[date.getDay()];
@@ -551,7 +551,7 @@ export default function ApplicationsPage() {
                             {comment.type}
                           </p>
                           <p className="text-[12px]">
-                            {formatUzbekistanTime3(comment.timestamp)}
+                            {formatUzbekistanTime2(comment.timestamp)}
                           </p>
                         </div>
                         <p className="p-2">
