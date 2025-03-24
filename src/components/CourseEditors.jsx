@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog2";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/app/supabaseClient";
 import { UserRoundPlus } from "lucide-react";
@@ -104,11 +104,11 @@ const CourseEditors = ({ courseId }) => {
           {loading ? (
             <p className="text-gray-500">Yuklanmoqda...</p>
           ) : (
-            <div className="space-y-2">
+            <div className="grid grid-cols-4 gap-3">
               {employees.map((employee) => (
                 <div
                   key={employee.id}
-                  className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-md"
+                  className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-md border"
                 >
                   <span>{employee.fio}</span>
                   <Switch
@@ -122,7 +122,7 @@ const CourseEditors = ({ courseId }) => {
           <Button
             onClick={saveEditors}
             disabled={saving}
-            className="w-full mt-4"
+            className="w-[400px] ml-auto"
           >
             {saving ? "Saqlanmoqda..." : "Saqlash"}
           </Button>

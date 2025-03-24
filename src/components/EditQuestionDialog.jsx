@@ -4,7 +4,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog2";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/app/supabaseClient";
@@ -73,16 +73,17 @@ const EditQuestionDialog = ({ testId, questionId, tests, setTests }) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} className="">
       <DialogTrigger asChild>
         <Button onClick={editQuestion}><FilePenLine /></Button>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Savolni Tahrirlash</DialogTitle>
         {selectedQuestion && (
-          <div className="space-y-4">
+          <div className="space-y-4 min-w-[900px] mx-auto">
             <Input
               label="Savol"
+              className="text-wrap w-full"
               value={editedQuestion}
               onChange={(e) => setEditedQuestion(e.target.value)}
             />
@@ -91,6 +92,7 @@ const EditQuestionDialog = ({ testId, questionId, tests, setTests }) => {
                 key={key}
                 label={key.toUpperCase()}
                 value={options[key]}
+                className="text-wrap w-full"
                 onChange={(e) =>
                   setOptions({ ...options, [key]: e.target.value })
                 }
