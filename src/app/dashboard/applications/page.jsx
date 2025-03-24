@@ -458,7 +458,7 @@ export default function ApplicationsPage() {
                     </p>
                     <br />
 
-                    <div className="flex items-center gap-3">
+                    {/* <div className="flex items-center gap-3">
                       <Select onValueChange={setSelectedEmployee}>
                         <SelectTrigger className="">
                           <SelectValue placeholder={"Bajaruvchini tanlang"} />
@@ -476,7 +476,7 @@ export default function ApplicationsPage() {
                       >
                         Bajaruvchini biriktirish
                       </Button>
-                    </div>
+                    </div> */}
 
                     <Input
                       type="text"
