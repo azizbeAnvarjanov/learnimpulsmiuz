@@ -460,7 +460,7 @@ export default function ApplicationsPage() {
                             {comment.type}
                           </p>
                           <p className="text-[12px]">
-                            {formatUzbekistanTime3(comment.timestamp)}
+                            {formatUzbekistanTime2(comment.timestamp)}
                           </p>
                         </div>
                         <p className="p-2">
