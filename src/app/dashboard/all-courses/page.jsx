@@ -50,7 +50,7 @@ const Dashboard = () => {
   const fetchCourses = async () => {
     if (!user) return; // Agar foydalanuvchi fio bo‘lmasa, hech narsa qilinmaydi
     setLoading(true);
-    const { data, error } = await supabase.from("courses").select("*");
+    const { data, error } = await supabase.from("courses").select("*").order("created_at", { ascending: true });
 
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);

@@ -75,7 +75,8 @@ const Dashboard = () => {
     const { data, error } = await supabase
       .from("courses")
       .select("id,course_id, name, banner_url, kurs")
-      .ilike("name", `%${search}%`);
+      .ilike("name", `%${search}%`)
+      .order("created_at", { ascending: true });
 
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);

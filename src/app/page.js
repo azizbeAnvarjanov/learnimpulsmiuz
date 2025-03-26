@@ -21,6 +21,7 @@ const Home = () => {
     const { data, error } = await supabase
       .from("courses")
       .select("*")
+      .order("created_at", { ascending: true });
 
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);
