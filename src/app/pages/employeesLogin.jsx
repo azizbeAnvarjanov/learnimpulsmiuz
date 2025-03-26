@@ -31,7 +31,7 @@ export default function EmployeesLogin() {
     }
 
     // Foydalanuvchini cookie'ga saqlaymiz (1 kun)
-    Cookies.set("employee", JSON.stringify(data), { expires: 1 });
+    Cookies.set("employee", JSON.stringify(data), { expires: 30 });
 
     // Dashboard sahifasiga yo‘naltiramiz
     router.push("/dashboard");
