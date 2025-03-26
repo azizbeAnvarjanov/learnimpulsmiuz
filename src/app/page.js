@@ -21,7 +21,6 @@ const Home = () => {
     const { data, error } = await supabase
       .from("courses")
       .select("*")
-      .eq("kurs", selectedKurs);
 
     if (error) {
       console.error("Kurslarni yuklashda xatolik:", error);
@@ -115,7 +114,7 @@ const Home = () => {
     <div>
       <StudentNavbar />
       <div className="p-5">
-        <h2 className="text-lg font-bold mb-4">Kurslarni Tanlang</h2>
+        {/* <h2 className="text-lg font-bold mb-4">Kurslarni Tanlang</h2>
         <div className="flex flex-wrap gap-2 mb-6">
           {["1", "2", "3", "4", "5", "6"].map((num) => (
             <Label
@@ -137,7 +136,7 @@ const Home = () => {
               {num}-kurs
             </Label>
           ))}
-        </div>
+        </div> */}
 
         <h2 className="text-lg font-bold">Fanlar</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">

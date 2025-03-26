@@ -59,7 +59,7 @@ const Dashboard = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("courses")
-      .select("*")
+      .select("course_id, name")
       .ilike("name", `%${search}%`);
 
     if (error) {
@@ -74,7 +74,7 @@ const Dashboard = () => {
     if (!user) return; // Agar foydalanuvchi fio bo‘lmasa, hech narsa qilinmaydi
     const { data, error } = await supabase
       .from("courses")
-      .select("*")
+      .select("id,course_id, name, banner_url, kurs")
       .ilike("name", `%${search}%`);
 
     if (error) {

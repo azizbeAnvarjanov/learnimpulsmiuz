@@ -47,6 +47,16 @@ const Navbar = () => {
           Hamma fanlar
         </Link>
       )}
+      {user?.role === "Super Admin" && (
+        <Link
+          className={`hover:bg-muted py-2 px-4 border rounded-xl ${
+            pathname === "/admin" ? "bg-blue-500 text-white" : ""
+          }`}
+          href="/admin"
+        >
+          Admin
+        </Link>
+      )}
       {user?.role === "Employee" && (
         <Link
           className={`hover:bg-muted py-2 px-4 border rounded-xl ${
