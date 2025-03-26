@@ -34,7 +34,7 @@ export default function LoginPage() {
     }
 
     // Foydalanuvchini cookie'ga saqlaymiz (1 kun)
-    Cookies.set("user", JSON.stringify(data), { expires: 1 });
+    Cookies.set("user", JSON.stringify(data), { expires: 30 });
     setLoading(false);
     // Dashboard sahifasiga yo‘naltiramiz
     router.push("/");
