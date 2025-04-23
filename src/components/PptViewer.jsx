@@ -14,7 +14,7 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-const PptViewerTabs = ({ notes }) => {
+const PptViewerTabs = ({ notes }) => {http://localhost:3000/test/18
   if (notes.length === 0) {
     return <h1 className="p-2 text-wrap">Prizentatsiya fayli mavjud memas!</h1>;
   }

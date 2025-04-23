@@ -81,8 +81,8 @@ export default function UploadPPT({ topicId }) {
       .eq("topic_id", topicId);
 
     if (updateError) {
-      setLoading(false);
       toast.error("Maʼlumotlar bazasini yangilashda xatolik!");
+      setLoading(false);
     } else {
       setLoading(false);
       toast.success("Fayl muvaffaqiyatli yuklandi!");

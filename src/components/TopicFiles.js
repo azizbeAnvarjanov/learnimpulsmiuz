@@ -61,6 +61,7 @@ export default function TopicFiles({ topicId }) {
       .upload(filePath, file);
     if (error) {
       toast.error("Fayl yuklashda xatolik!");
+      console.error(error);
       return;
     }
 

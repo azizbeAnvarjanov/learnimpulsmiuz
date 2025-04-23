@@ -11,6 +11,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/app/supabaseClient";
 import { UserRoundPlus } from "lucide-react";
+import toast from "react-hot-toast";
 
 const CourseEditors = ({ courseId }) => {
   const [employees, setEmployees] = useState([]);
@@ -81,8 +82,10 @@ const CourseEditors = ({ courseId }) => {
 
     if (error) {
       console.error("Xatolik:", error);
+      toast.error("E")
     } else {
       setEditors(tempEditors);
+      toast.success("A")
       setIsDialogOpen(false); // Dialogni yopish
     }
 

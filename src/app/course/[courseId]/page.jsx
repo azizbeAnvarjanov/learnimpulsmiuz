@@ -62,6 +62,8 @@ export default function CoursePage() {
     if (!error) setCourse(data);
   };
 
+  console.log(course);
+
   const fetchTopics = async () => {
     const { data, error } = await supabase
       .from("topics")
