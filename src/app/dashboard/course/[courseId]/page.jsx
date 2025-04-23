@@ -180,64 +180,70 @@ export default function CoursePage() {
 
   // 🔹 Kurs bannerini yangilash funksiyasi
   const updateCourseBanner = async () => {
-    console.log(course);
     if (!newBanner) {
       toast.error("Yangi rasm tanlang!");
       return;
     }
-
+  
+    const allowedTypes = ["image/jpeg", "image/png"];
+    if (!allowedTypes.includes(newBanner.type)) {
+      toast.error("Faqat JPG yoki PNG rasm yuklang!");
+      return;
+    }
+  
     setIsUpdating(true);
-
-    // 1️⃣ Eski rasm URL'dan fayl nomini ajratib olish
-    if (course.banner_url) {
-      const decodedUrl = decodeURIComponent(course.banner_url); // URL ni dekodlash
-      const parts = decodedUrl.split("/"); // URL bo‘laklarga ajratish
-      const bannerName = parts[parts.length - 1];
-      if (bannerName) {
+  
+    try {
+      // Eski rasmni o‘chirish
+      if (course.banner_url) {
+        const decodedUrl = decodeURIComponent(course.banner_url);
+        const parts = decodedUrl.split("/");
+        const bannerName = parts[parts.length - 1].split("?")[0]; // agar oldin ? bor bo‘lsa, olib tashlaymiz
+  
         await supabase.storage
           .from("banners")
-          .remove([`banners/${course.course_id}/${bannerName}`]);
+          .remove([`${course.course_id}/${bannerName}`]);
       }
-    }
-
-    // 2️⃣ Yangi rasmni yuklash
-    const filePath = `banners/${course.course_id}/${newBanner.name}`;
-    const { data, error } = await supabase.storage
-      .from("banners")
-      .upload(filePath);
-
-    if (error) {
-      toast.error("Yangi rasm yuklashda xatolik!");
-      setIsUpdating(false);
-      return;
-    }
-
-    // 3️⃣ Yangi URL'ni olish
-    const { data: publicUrlData } = supabase.storage
-      .from("banners")
-      .getPublicUrl(filePath);
-
-    if (!publicUrlData || !publicUrlData.publicUrl) {
-      toast.error("Rasm URL'sini olishda xatolik!");
-      setIsUpdating(false);
-      return;
-    }
-
-    // 4️⃣ Kursni yangilash
-    const { error: updateError } = await supabase
-      .from("courses")
-      .update({ banner_url: publicUrlData.publicUrl })
-      .eq("id", course.id);
-
-    if (updateError) {
-      toast.error("Kurs bannerini yangilashda xatolik!");
-    } else {
+  
+      // Yangi rasmni yuklash
+      const filePath = `${course.course_id}/${newBanner.name}`;
+      const { data, error } = await supabase.storage
+        .from("banners")
+        .upload(filePath, newBanner);
+  
+      if (error) throw error;
+  
+      // Public URL olish
+      const { data: publicUrlData } = supabase.storage
+        .from("banners")
+        .getPublicUrl(filePath);
+  
+      if (!publicUrlData?.publicUrl) {
+        toast.error("Rasm URL'sini olishda xatolik!");
+        return;
+      }
+  
+      const uniqueUrl = `${publicUrlData.publicUrl}?t=${Date.now()}`; // keshlashdan qochish uchun
+  
+      // Kursni yangilash
+      const { error: updateError } = await supabase
+        .from("courses")
+        .update({ banner_url: uniqueUrl })
+        .eq("id", course.id);
+  
+      if (updateError) throw updateError;
+  
       toast.success("Kurs banneri yangilandi!");
       fetchCourse();
+  
+    } catch (err) {
+      console.error(err);
+      toast.error("Banner yangilashda xatolik!");
     }
-
+  
     setIsUpdating(false);
   };
+  
   console.log(isEditor);
 
   const isEdit = isEditor.some((editor) => editor.id === user?.id);
