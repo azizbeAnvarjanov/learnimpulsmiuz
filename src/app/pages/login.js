@@ -101,9 +101,9 @@ export default function LoginPage() {
         <div className="flex flex-col-reverse md:flex-row w-[90%] md:w-96 md:shadow-lg rounded-xl overflow-hidden">
           {/* Left Section - Login Form */}
           <div className="w-[100%] rounded-xl md:rounded-none mx-auto bg-white p-8 flex flex-col justify-center">
-            <div className="w-[80px]  h-[80px] mx-auto relative">
+            {/* <div className="w-[80px]  h-[80px] mx-auto relative">
               <img src={"/logo.png"} alt="" className="object-contain" />
-            </div>
+            </div> */}
             <h2 className="text-xl text-center font-bold mt-2">
               Impuls ta'lim platofrmasi
             </h2>

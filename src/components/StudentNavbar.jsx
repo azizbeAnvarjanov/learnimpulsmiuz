@@ -23,12 +23,12 @@ const StudentNavbar = () => {
   };
   return (
     <div className="h-[8vh] flex items-center gap-2 px-5 border-b justify-between">
-      <Link
+      {/* <Link
         href={"/"}
         className="min-w-[40px] min-h-[40px] md:min-w-[50px] md:min-h-[50px] relative"
       >
         <img src={"/logo.png"} alt="" className="object-contain" />
-      </Link>
+      </Link> */}
       <div className="hidden md:flex items-center gap-3">
         <Link
           className={`border py-1 px-5 rounded-md ${
