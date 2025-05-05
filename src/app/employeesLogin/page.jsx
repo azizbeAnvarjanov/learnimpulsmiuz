@@ -42,7 +42,7 @@ const EmployeesLoigin = () => {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <div className="w-[80px] mb-2 h-[80px] mx-auto relative">
-          <Image fill src={"/logo.png"} alt="" className="object-contain" />
+          <img src={"/logo.png"} alt="" className="object-contain" />
         </div>
         <h2 className="text-xl text-center font-bold mb-4">
           Impuls ta'lim platofrmasi

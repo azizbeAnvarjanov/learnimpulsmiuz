@@ -66,9 +66,8 @@ export default function UploadPPT({ topicId }) {
 
     const { publicURL } = supabase.storage.from("ppts").getPublicUrl(filePath);
     const fileUrl = `${
-      supabase.storage
-        .from("ppts")
-        .getPublicUrl(`ppts/${topicId}/${file.name}`).data.publicUrl
+      supabase.storage.from("ppts").getPublicUrl(`ppts/${topicId}/${file.name}`)
+        .data.publicUrl
     }`;
     const newNote = { name: fileName, url: fileUrl };
 
@@ -141,7 +140,11 @@ export default function UploadPPT({ topicId }) {
 
   return (
     <div className="w-full">
-      <Button className="rounded-xl" variant="ppt" onClick={() => setIsOpen(true)}>
+      <Button
+        className="rounded-xl"
+        variant="ppt"
+        onClick={() => setIsOpen(true)}
+      >
         PPT qo‘shish <CircleFadingPlus size={28} />
       </Button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -165,7 +168,7 @@ export default function UploadPPT({ topicId }) {
               onChange={(e) => setFile(e.target.files[0])}
             />
           </div>
-          <Button  onClick={handleFileUpload} disabled={loading}>{`${
+          <Button onClick={handleFileUpload} disabled={loading}>{`${
             loading ? "Yuklanmoqda...." : "Yuklash"
           }`}</Button>
         </DialogContent>
@@ -178,12 +181,7 @@ export default function UploadPPT({ topicId }) {
           >
             <div className="flex items-center gap-2">
               <div className="w-[30px] h-[40px] relative">
-                <Image
-                  fill
-                  src={"/ppt.png"}
-                  className="object-contain"
-                  alt=""
-                />
+                <img src={"/ppt.png"} className="object-contain" alt="" />
               </div>
               <Link href={note.url} className="font-medium">
                 {note.name}

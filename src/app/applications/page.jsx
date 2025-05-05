@@ -166,14 +166,7 @@ const ApplicationPage = () => {
                   className="border p-3 rounded-lg shadow-md flex items-center justify-between gap-2"
                 >
                   <div className="flex items-start">
-                    <div className="min-w-[50px] min-h-[50px] relative">
-                      <Image
-                        src={"/doc.png"}
-                        fill
-                        alt=""
-                        className="object-contain"
-                      />
-                    </div>
+                    
                     <div>
                       <div className="line-clamp-1 text-gray-800">
                         {app.student_application}

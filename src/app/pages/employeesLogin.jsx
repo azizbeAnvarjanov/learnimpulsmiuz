@@ -84,7 +84,7 @@ export default function EmployeesLogin() {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <div className="w-[80px]  h-[80px] mx-auto relative">
-          <Image fill src={"/logo.png"} alt="" className="object-contain" />
+          <img src={"/logo.png"} alt="" className="object-contain" />
         </div>
         <h2 className="text-2xl font-bold mb-4">Xodim Login</h2>
         {error && <p className="text-red-500">{error}</p>}

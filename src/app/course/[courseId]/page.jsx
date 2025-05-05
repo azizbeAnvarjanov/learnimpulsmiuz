@@ -227,8 +227,7 @@ export default function CoursePage() {
                   }`}
                 >
                   <div className="w-[25px] h-[25px] relative">
-                    <Image
-                      fill
+                    <img
                       src={"/videopl.png"}
                       alt=""
                       className="object-contain"
@@ -242,8 +241,7 @@ export default function CoursePage() {
                     key={idx}
                   >
                     <div className="w-[20px] h-[20px] relative">
-                      <Image
-                        fill
+                      <img
                         src={"/pdf.png"}
                         alt=""
                         className="object-contain"
@@ -258,8 +256,7 @@ export default function CoursePage() {
                     key={idx}
                   >
                     <div className="w-[20px] h-[20px] relative">
-                      <Image
-                        fill
+                      <img
                         src={"/ppt.png"}
                         alt=""
                         className="object-contain"

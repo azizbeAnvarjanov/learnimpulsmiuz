@@ -179,8 +179,7 @@ export default function TopicFiles({ topicId }) {
           >
             <div className="flex items-center gap-2">
               <div className="w-[30px] h-[40px] relative">
-                <Image
-                  fill
+                <img
                   src={"/pdf.png"}
                   className="object-contain"
                   alt=""

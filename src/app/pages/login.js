@@ -102,7 +102,7 @@ export default function LoginPage() {
           {/* Left Section - Login Form */}
           <div className="w-[100%] rounded-xl md:rounded-none mx-auto bg-white p-8 flex flex-col justify-center">
             <div className="w-[80px]  h-[80px] mx-auto relative">
-              <Image fill src={"/logo.png"} alt="" className="object-contain" />
+              <img src={"/logo.png"} alt="" className="object-contain" />
             </div>
             <h2 className="text-xl text-center font-bold mt-2">
               Impuls ta'lim platofrmasi

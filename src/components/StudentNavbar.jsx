@@ -27,7 +27,7 @@ const StudentNavbar = () => {
         href={"/"}
         className="min-w-[40px] min-h-[40px] md:min-w-[50px] md:min-h-[50px] relative"
       >
-        <Image fill src={"/logo.png"} alt="" className="object-contain" />
+        <img src={"/logo.png"} alt="" className="object-contain" />
       </Link>
       <div className="hidden md:flex items-center gap-3">
         <Link
