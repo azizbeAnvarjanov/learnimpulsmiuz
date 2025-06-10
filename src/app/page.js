@@ -4,19 +4,25 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "./supabaseClient";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import StudentNavbar from "@/components/StudentNavbar";
+import Sorovnoma from "@/components/sorovnoma/Sorovnoma";
 
 const Home = () => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [courses, setCourses] = useState([]);
-  const [kurs, setKurs] = useState("");
   const [loading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   const sorovnomaStatus = Cookies.get("sorovnoma");
 
-  const fetchCourses = async (selectedKurs) => {
+  //   // Cookie yo'q yoki false bo‘lsa, sorovnomani ko‘rsatish
+  //   if (!sorovnomaStatus || sorovnomaStatus === "false") {
+  //     router.push("/sorovnoma");
+  //   }
+  // }, []);
+
+  const fetchCourses = async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("courses")
@@ -37,8 +43,7 @@ const Home = () => {
     if (userData) {
       const parsedUser = JSON.parse(userData);
       setUser(parsedUser);
-      setKurs(parsedUser.kurs);
-      fetchCourses(parsedUser.kurs);
+      fetchCourses();
     }
   }, []);
   useEffect(() => {
@@ -54,12 +59,6 @@ const Home = () => {
       }
     }
   }, [user]);
-
-  const handleKursChange = (event) => {
-    const selectedKurs = event.target.value;
-    setKurs(selectedKurs);
-    fetchCourses(selectedKurs);
-  };
 
   if (loading) {
     return (
