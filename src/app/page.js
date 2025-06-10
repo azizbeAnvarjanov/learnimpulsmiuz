@@ -13,14 +13,14 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   const sorovnomaStatus = Cookies.get("sorovnoma");
+  useEffect(() => {
+    const sorovnomaStatus = Cookies.get("sorovnoma");
 
-  //   // Cookie yo'q yoki false bo‘lsa, sorovnomani ko‘rsatish
-  //   if (!sorovnomaStatus || sorovnomaStatus === "false") {
-  //     router.push("/sorovnoma");
-  //   }
-  // }, []);
+    // Cookie yo'q yoki false bo‘lsa, sorovnomani ko‘rsatish
+    if (!sorovnomaStatus || sorovnomaStatus === "false") {
+      router.push("/sorovnoma");
+    }
+  }, []);
 
   const fetchCourses = async () => {
     setLoading(true);
